@@ -1,0 +1,269 @@
+/* === LOGIN PAGE — Telegram Desktop Style === */
+
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fondo: un gradiente muy sutil hacia arriba — como el fondo del chat de Telegram */
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(42,171,238,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Card central */
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 360px;
+  background: var(--surface-panel);
+  border: 1px solid var(--surface-divider);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* --- Logo y header --- */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.logo {
+  width: 72px;
+  height: 72px;
+  background: var(--tg-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo svg {
+  width: 36px;
+  height: 36px;
+  color: white;
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* --- Step dots --- */
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.step {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--surface-divider);
+  transition: all var(--transition-normal);
+}
+
+.step.active {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--tg-blue);
+}
+
+.step.done {
+  background: var(--color-success);
+}
+
+/* --- Formulario --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--surface-input);
+  border: 1px solid var(--surface-divider);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.input:focus {
+  border-color: var(--tg-blue);
+  box-shadow: 0 0 0 2px var(--tg-blue-dim);
+}
+
+/* Inputs numéricos — sin spinners */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* --- Botón principal --- */
+.button {
+  width: 100%;
+  padding: 11px 16px;
+  background: var(--tg-blue);
+  color: white;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  letter-spacing: 0.01em;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--tg-blue-dark);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Botón secundario (back) --- */
+.buttonBack {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--surface-divider);
+  font-size: var(--text-sm);
+  padding: 9px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  width: 100%;
+  font-family: var(--font-sans);
+}
+
+.buttonBack:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* --- Error message --- */
+.errorMessage {
+  font-size: var(--text-sm);
+  color: var(--color-error);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(224,92,92,0.08);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(224,92,92,0.15);
+}
+
+/* --- Help link --- */
+.helpLink {
+  text-align: center;
+  margin-top: 6px;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.helpLink a {
+  color: var(--tg-blue);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.helpLink a:hover {
+  color: var(--tg-blue-dark);
+  text-decoration: underline;
+}
+
+/* Botón con apariencia de link para el trigger del guide */
+.helpLinkButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--tg-blue);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.helpLinkButton:hover {
+  color: var(--tg-blue-dark);
+}
+
+/* --- Loading spinner --- */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

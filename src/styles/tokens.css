@@ -1,0 +1,76 @@
+/* === DESIGN TOKENS — Telegram Drive === */
+/* Paleta inspirada en Telegram Desktop: azul noche, no gris genérico */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* --- Primary Blue --- */
+  --tg-blue:      #3b82f6;   /* acento principal, azul normal */
+  --tg-blue-dark: #2563eb;   /* hover / pressed */
+  --tg-blue-dim:  rgba(59, 130, 246, 0.15);  /* fondos sutiles */
+
+  /* --- Superficies: paleta neutral dark --- */
+  --surface-bg:       #0f1115;  /* fondo base oscuro */
+  --surface-panel:    #181a20;  /* paneles elevados */
+  --surface-input:    #22252b;  /* inputs, campos */
+  --surface-item:     #181a20;  /* items de lista en reposo */
+  --surface-hover:    #22252b;  /* hover state */
+  --surface-active:   rgba(59, 130, 246, 0.1); /* selección activa */
+  --surface-divider:  rgba(255,255,255,0.08);  /* divisores muy sutiles */
+
+  /* --- Texto --- */
+  --text-primary:   #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --text-accent:    var(--tg-blue);
+
+  /* --- Estado --- */
+  --color-success: #4DDB6E;
+  --color-error:   #E05C5C;
+  --color-warning: #F4B400;
+
+  /* --- Tipografía --- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs:   0.6875rem;  /* 11px */
+  --text-sm:   0.8125rem;  /* 13px */
+  --text-base: 0.9375rem;  /* 15px */
+  --text-lg:   1.0625rem;  /* 17px */
+  --text-xl:   1.1875rem;  /* 19px */
+  --text-2xl:  1.375rem;   /* 22px */
+
+  /* --- Espaciado --- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* --- Bordes — más suaves, menos angulares que el diseño anterior --- */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* --- Sombras — sutiles, no dramáticas --- */
+  --shadow-sm:  0 1px 4px rgba(0,0,0,0.3);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.5);
+
+  /* --- Transiciones --- */
+  --transition-fast:   120ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow:   350ms ease;
+
+  /* --- Layout --- */
+  --sidebar-width: 260px;
+  --topbar-height: 52px;
+}
