@@ -1,0 +1,90 @@
+
+.env
+.env.*
+!.env.example
+*.session
+telegram.session
+session.db
+config.json
+credentials.json
+api_config.*
+
+# =============================================
+# Node.js
+# =============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =============================================
+# Vite / Build
+# =============================================
+dist/
+dist-ssr/
+*.local
+
+# =============================================
+# Rust / Cargo
+# =============================================
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# =============================================
+# Base de datos local (índice de archivos)
+# =============================================
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# =============================================
+# Logs del sistema y de la app
+# =============================================
+logs/
+*.log
+
+# =============================================
+# Sistema operativo
+# =============================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# =============================================
+# Editores e IDEs
+# =============================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+.project
+.classpath
+
+# =============================================
+# Archivos temporales
+# =============================================
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+~$*
+
+# =============================================
+# Agente de IA (uso interno)
+# =============================================
+.agent/
+.agent-loadout
