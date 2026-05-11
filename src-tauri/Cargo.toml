@@ -1,0 +1,47 @@
+[package]
+name = "telegram-drive"
+version = "0.1.0"
+description = "Telegram Drive — Tu Google Drive gratis e ilimitado"
+authors = ["Hugo"]
+edition = "2021"
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# --- Core Tauri ---
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+
+# --- Serialización ---
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# --- Async runtime ---
+tokio = { version = "1", features = ["full"] }
+
+# --- Telegram MTProto (userbot) ---
+grammers-client = "0.7"
+grammers-session = "0.7"
+
+# --- Base de datos local (índice de metadatos) ---
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# --- Cifrado AES-256-GCM (opt-in por carpeta) ---
+aes-gcm = "0.10"
+rand = "0.8"
+
+# --- Manejo de errores ---
+anyhow = "1"
+thiserror = "1"
+
+# --- Logging ---
+log = "0.4"
+env_logger = "0.11"
+
