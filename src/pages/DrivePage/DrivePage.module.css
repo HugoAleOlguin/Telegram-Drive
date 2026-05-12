@@ -1,24 +1,16 @@
-/* === DRIVE PAGE — Telegram Desktop Layout === */
-
 .container {
-  width: 100vw;
-  height: 100vh;
+  width: 100vw; height: 100vh;
   display: grid;
   grid-template-rows: var(--topbar-height) 1fr;
   grid-template-columns: var(--sidebar-width) 1fr;
-  grid-template-areas:
-    "topbar topbar"
-    "sidebar main";
+  grid-template-areas: "topbar topbar" "sidebar main";
   overflow: hidden;
   background: var(--surface-bg);
 }
 
-/* --- Topbar --- */
 .topbar {
   grid-area: topbar;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 0 var(--space-4);
   background: var(--surface-panel);
   border-bottom: 1px solid var(--surface-divider);
@@ -26,229 +18,110 @@
   -webkit-app-region: drag;
 }
 
-.topbar > * {
-  -webkit-app-region: no-drag;
-}
+.topbar > * { -webkit-app-region: no-drag; }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-weight: 600;
-  font-size: var(--text-base);
-  color: var(--text-primary);
-  flex-shrink: 0;
+  display: flex; align-items: center; gap: var(--space-2);
+  font-weight: 600; font-size: var(--text-base);
+  color: var(--text-primary); flex-shrink: 0;
 }
 
 .brandIcon {
-  width: 28px;
-  height: 28px;
-  background: var(--tg-blue);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 28px; height: 28px;
+  background: var(--tg-blue); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
 }
 
-.brandIcon svg {
-  width: 15px;
-  height: 15px;
-  color: white;
-}
+.brandIcon svg { width: 15px; height: 15px; color: white; }
 
 .topbarActions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  display: flex; align-items: center; gap: 4px;
 }
 
-.iconButton {
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  cursor: pointer;
+.iconBtn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; border-radius: var(--radius-sm);
+  color: var(--text-secondary); cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.iconButton:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-}
+.iconBtn:hover { background: var(--surface-hover); color: var(--text-primary); }
 
-/* --- Sidebar --- */
 .sidebar {
   grid-area: sidebar;
   background: var(--surface-panel);
   border-right: 1px solid var(--surface-divider);
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   overflow-y: auto;
   padding: var(--space-3) var(--space-2);
-  gap: 2px;
-}
-
-.sidebarSection {
-  margin-top: var(--space-4);
-}
-
-.sidebarSection:first-child {
-  margin-top: 0;
 }
 
 .sidebarLabel {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
+  font-size: var(--text-xs); font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding: 0 var(--space-3);
-  margin-bottom: var(--space-2);
+  padding: 0 var(--space-3); margin-bottom: var(--space-2);
 }
 
-/* --- Main content area --- */
 .main {
   grid-area: main;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  display: flex; flex-direction: column; overflow: hidden;
   background: var(--surface-bg);
 }
 
 .mainHeader {
   padding: var(--space-3) var(--space-5);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   border-bottom: 1px solid var(--surface-divider);
-  flex-shrink: 0;
-  min-height: 48px;
+  flex-shrink: 0; min-height: 48px;
 }
 
 .breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
+  display: flex; align-items: center; gap: var(--space-1);
+  font-size: var(--text-sm); color: var(--text-secondary);
 }
 
-.breadcrumb span:first-child {
-  color: var(--tg-blue);
-  font-weight: 500;
+.breadcrumb span:first-child { color: var(--tg-blue); font-weight: 500; }
+
+.current { color: var(--text-primary); font-weight: 500; }
+
+.toolbar {
+  display: flex; align-items: center; gap: var(--space-2);
 }
 
-.breadcrumb span:not(:first-child, :last-child) {
-  color: var(--text-muted);
-}
-
-.breadcrumbCurrent {
-  color: var(--text-primary) !important;
-  font-weight: 500;
-}
-
-.mainToolbar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-/* Toggle de vistas — versión Telegram: sin fondo, solo el activo destacado */
 .viewToggle {
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   background: var(--surface-input);
   border-radius: var(--radius-sm);
   padding: 2px;
   border: 1px solid var(--surface-divider);
 }
 
-.viewToggleBtn {
+.viewBtn {
   padding: 5px 8px;
-  background: transparent;
-  border: none;
+  background: transparent; border: none;
   border-radius: calc(var(--radius-sm) - 2px);
-  color: var(--text-muted);
-  cursor: pointer;
+  color: var(--text-muted); cursor: pointer;
   transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
 }
 
-.viewToggleBtn.active {
-  background: var(--surface-hover);
-  color: var(--tg-blue);
+.viewBtn.active { background: var(--surface-hover); color: var(--tg-blue); }
+
+.content {
+  flex: 1; overflow-y: auto; padding: var(--space-5);
 }
 
-.mainContent {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--space-5);
-}
-
-/* --- Upload button — solid blue, no gradient --- */
-.uploadButton {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
+.uploadBtn {
+  display: flex; align-items: center; gap: var(--space-2);
   padding: 7px 14px;
-  background: var(--tg-blue);
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  cursor: pointer;
+  background: var(--tg-blue); color: white;
+  border: none; border-radius: var(--radius-md);
+  font-family: var(--font-sans); font-size: var(--text-sm);
+  font-weight: 600; cursor: pointer;
   transition: background var(--transition-fast);
 }
 
-.uploadButton:hover {
-  background: var(--tg-blue-dark);
-}
-
-/* --- File grid and list --- */
-.fileGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: var(--space-3);
-}
-
-.fileList {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-/* --- Empty state --- */
-.emptyState {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-16);
-  color: var(--text-muted);
-  text-align: center;
-}
-
-.emptyState svg {
-  width: 48px;
-  height: 48px;
-  opacity: 0.25;
-}
-
-.emptyStateTitle {
-  font-size: var(--text-base);
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
-.emptyStateDesc {
-  font-size: var(--text-sm);
-}
+.uploadBtn:hover { background: var(--tg-blue-dark); }
+.uploadBtn:disabled { opacity: 0.4; cursor: not-allowed; }

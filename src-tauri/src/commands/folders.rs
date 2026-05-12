@@ -1,10 +1,10 @@
-// === COMMANDS/FOLDERS.RS — Comandos de gestión de carpetas ===
-
 use serde::{Deserialize, Serialize};
-use tauri::command;
+use tauri::{command, State};
+use uuid::Uuid;
+use crate::AppState;
 
-/// Representa una carpeta del Drive (mapea a un canal privado de Telegram)
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct DriveFolder {
     pub id: String,
     pub name: String,
@@ -14,30 +14,58 @@ pub struct DriveFolder {
     pub file_count: Option<i64>,
 }
 
-/// Lista todas las carpetas del Drive:
-/// - La raíz (Saved Messages) siempre aparece primero
-/// - Los canales privados con prefijo "td_folder_" se muestran como carpetas
 #[command]
-pub async fn list_folders() -> Result<Vec<DriveFolder>, String> {
-    log::info!("list_folders: listando carpetas del drive");
-    // TODO: Fase 2 — client.iter_dialogs() filtrando por nombre td_folder_*
-    Ok(vec![])
+pub async fn list_folders(state: State<'_, AppState>) -> Result<Vec<DriveFolder>, String> {
+    let conn = state.db_conn.lock().unwrap();
+    let mut stmt = conn.prepare("SELECT id, name, parent_id, telegram_channel_id, created_at FROM folders ORDER BY created_at ASC")
+        .map_err(|e| e.to_string())?;
+
+    let rows = stmt.query_map([], |row| {
+        Ok(DriveFolder {
+            id: row.get(0)?,
+            name: row.get(1)?,
+            parent_id: row.get(2)?,
+            telegram_channel_id: row.get(3)?,
+            created_at: row.get(4)?,
+            file_count: None,
+        })
+    }).map_err(|e| e.to_string())?;
+
+    let mut folders = Vec::new();
+    for row in rows {
+        if let Ok(folder) = row {
+            folders.push(folder);
+        }
+    }
+    Ok(folders)
 }
 
-/// Crea una nueva carpeta creando un canal privado en Telegram.
-/// El nombre del canal se formatea como "td_folder_{name}" para identificarlo.
 #[command]
-pub async fn create_folder(name: String, parent_id: Option<String>) -> Result<DriveFolder, String> {
-    log::info!("create_folder: name={}, parent_id={:?}", name, parent_id);
-    // TODO: Fase 3 — client.create_channel(format!("td_folder_{}", name)).await
-    Err("Not implemented yet".to_string())
+pub async fn create_folder(state: State<'_, AppState>, name: String, parent_id: Option<String>) -> Result<DriveFolder, String> {
+    let id = Uuid::new_v4().to_string();
+    let telegram_channel_id = format!("td_folder_{}", name);
+    let created_at = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() as i64;
+
+    let conn = state.db_conn.lock().unwrap();
+    conn.execute(
+        "INSERT INTO folders (id, name, parent_id, telegram_channel_id, created_at) VALUES (?1, ?2, ?3, ?4, ?5)",
+        rusqlite::params![id, name, parent_id, telegram_channel_id, created_at],
+    ).map_err(|e| e.to_string())?;
+
+    Ok(DriveFolder {
+        id,
+        name,
+        parent_id,
+        telegram_channel_id,
+        created_at,
+        file_count: None,
+    })
 }
 
-/// Elimina una carpeta (archiva el canal privado de Telegram).
-/// Los archivos dentro siguen existiendo en Telegram pero el índice local los marca como eliminados.
 #[command]
-pub async fn delete_folder(folder_id: String) -> Result<(), String> {
-    log::info!("delete_folder: folder_id={}", folder_id);
-    // TODO: Fase 3 — client.delete_channel(channel_id).await
+pub async fn delete_folder(state: State<'_, AppState>, folder_id: String) -> Result<(), String> {
+    let conn = state.db_conn.lock().unwrap();
+    conn.execute("DELETE FROM folders WHERE id = ?1", rusqlite::params![folder_id])
+        .map_err(|e| e.to_string())?;
     Ok(())
 }

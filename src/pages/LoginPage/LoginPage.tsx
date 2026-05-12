@@ -1,84 +1,54 @@
-// === LOGIN PAGE ===
-// Wizard de 2 pasos: (1) API credentials, (2) Código OTP de Telegram
-
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { authLogin, authVerifyCode } from '../../services/tauri-bridge';
 import { ApiGuide } from '../../components/ApiGuide/ApiGuide';
-import type { AuthStatus } from '../../types';
 import styles from './LoginPage.module.css';
 
-// Variantes de animación para transiciones entre pasos
-const stepVariants = {
-  enter: { opacity: 0, x: 30 },
-  center: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -30 },
-};
-
-interface LoginPageProps {
+interface Props {
   onAuthSuccess: () => void;
 }
 
-export function LoginPage({ onAuthSuccess }: LoginPageProps) {
-  // --- Estado del wizard ---
+export function LoginPage({ onAuthSuccess }: Props) {
   const [step, setStep] = useState<1 | 2>(1);
-  const [status, setStatus] = useState<AuthStatus>('idle');
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
 
-  // --- Campos del formulario ---
   const [apiId, setApiId] = useState('');
   const [apiHash, setApiHash] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otpCode, setOtpCode] = useState('');
+  const [phone, setPhone] = useState('');
+  const [code, setCode] = useState('');
 
-  const isLoading = status === 'entering_phone' || status === 'waiting_code';
-
-  // Paso 1: envía las credenciales API al backend Rust
-  async function handleCredentialsSubmit(e: React.FormEvent) {
+  async function handleCredentials(e: React.FormEvent) {
     e.preventDefault();
-    setErrorMsg(null);
-    setStatus('entering_phone');
-
+    setError(null);
+    setLoading(true);
     try {
-      await authLogin({
-        apiId: parseInt(apiId, 10),
-        apiHash: apiHash.trim(),
-        phoneNumber: phoneNumber.trim(),
-      });
-      setStatus('waiting_code');
+      await authLogin({ apiId: parseInt(apiId, 10), apiHash: apiHash.trim(), phoneNumber: phone.trim() });
       setStep(2);
     } catch (err) {
-      setStatus('error');
-      setErrorMsg(err instanceof Error ? err.message : (typeof err === 'string' ? err : 'Could not connect to Telegram. Check your credentials.'));
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
     }
   }
 
-  // Paso 2: verifica el código OTP recibido por Telegram
-  async function handleOtpSubmit(e: React.FormEvent) {
+  async function handleCode(e: React.FormEvent) {
     e.preventDefault();
-    setErrorMsg(null);
-    setStatus('waiting_code');
-
+    setError(null);
+    setLoading(true);
     try {
-      await authVerifyCode(otpCode.trim());
-      setStatus('authenticated');
+      await authVerifyCode(code.trim());
       onAuthSuccess();
     } catch (err) {
-      setStatus('error');
-      setErrorMsg(err instanceof Error ? err.message : (typeof err === 'string' ? err : 'Incorrect code, please try again.'));
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className={styles.page}>
-      <motion.div
-        className={styles.card}
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-      >
-        {/* Header */}
+      <div className={`${styles.card} fade-in-up`}>
         <div className={styles.header}>
           <div className={styles.logo}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -86,158 +56,70 @@ export function LoginPage({ onAuthSuccess }: LoginPageProps) {
             </svg>
           </div>
           <h1 className={styles.title}>Telegram Drive</h1>
-          <p className={styles.subtitle}>Your Telegram account as unlimited cloud storage</p>
+          <p className={styles.subtitle}>Cloud Storage Ilimitado</p>
         </div>
 
-        {/* Step indicators */}
         <div className={styles.stepIndicator}>
-          <div className={`${styles.step} ${step >= 1 ? styles.active : ''} ${step > 1 ? styles.done : ''}`} />
+          <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`} />
           <div className={`${styles.step} ${step === 2 ? styles.active : ''}`} />
         </div>
 
-        {/* Wizard content con animación entre pasos */}
-        <AnimatePresence mode="wait">
-          {step === 1 ? (
-            <motion.form
-              key="step1"
-              className={styles.form}
-              variants={stepVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.25 }}
-              onSubmit={handleCredentialsSubmit}
-            >
-              <div className={styles.fieldGroup}>
-                <label className={styles.label} htmlFor="apiId">API ID</label>
-                <input
-                  id="apiId"
-                  type="number"
-                  className={styles.input}
-                  placeholder="12345678"
-                  value={apiId}
-                  onChange={(e) => setApiId(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
+        {step === 1 ? (
+          <form key="step1" className={`${styles.form} slide-in-right`} onSubmit={handleCredentials}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="apiId">API ID</label>
+              <input id="apiId" type="number" className={styles.input} placeholder="12345678"
+                value={apiId} onChange={(e) => setApiId(e.target.value)} required disabled={loading} />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="apiHash">API Hash</label>
+              <input id="apiHash" type="password" className={styles.input} placeholder="a1b2c3d4..."
+                value={apiHash} onChange={(e) => setApiHash(e.target.value)} required disabled={loading} />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="phone">Phone Number</label>
+              <input id="phone" type="tel" className={styles.input} placeholder="+1234567890"
+                value={phone} onChange={(e) => setPhone(e.target.value)} required disabled={loading} />
+            </div>
 
-              <div className={styles.fieldGroup}>
-                <label className={styles.label} htmlFor="apiHash">API Hash</label>
-                <input
-                  id="apiHash"
-                  type="password"
-                  className={styles.input}
-                  placeholder="a1b2c3d4e5f6..."
-                  value={apiHash}
-                  onChange={(e) => setApiHash(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
+            {error && <p className={styles.error}>⚠ {error}</p>}
 
-              <div className={styles.fieldGroup}>
-                <label className={styles.label} htmlFor="phoneNumber">Phone Number</label>
-                <input
-                  id="phoneNumber"
-                  type="tel"
-                  className={styles.input}
-                  placeholder="+1234567890"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
+            <button type="submit" className={styles.button} disabled={loading || !apiId || !apiHash}>
+              {loading ? <span className={styles.spinner} /> : 'Connect to Telegram'}
+            </button>
 
-              {errorMsg && (
-                <p className={styles.errorMessage}>
-                  <span>⚠</span> {errorMsg}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className={styles.button}
-                disabled={isLoading || !apiId || !apiHash}
-              >
-                {isLoading ? <span className={styles.spinner} /> : 'Connect to Telegram'}
+            <p className={styles.helpLink}>
+              Need help?{' '}
+              <button type="button" className={styles.linkBtn} onClick={() => setShowGuide(true)}>
+                How do I get these?
               </button>
+            </p>
+          </form>
+        ) : (
+          <form key="step2" className={`${styles.form} slide-in-right`} onSubmit={handleCode}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="code">Verification code</label>
+              <input id="code" type="text" inputMode="numeric" pattern="[0-9]*"
+                className={styles.input} placeholder="12345"
+                value={code} onChange={(e) => setCode(e.target.value)} required disabled={loading} autoFocus />
+              <p className={styles.hint}>Check your Telegram app for the verification code.</p>
+            </div>
 
-              <p className={styles.helpLink}>
-                Need help?{' '}
-                <button
-                  type="button"
-                  className={styles.helpLinkButton}
-                  onClick={() => setShowGuide(true)}
-                >
-                  How do I get these?
-                </button>
-              </p>
-            </motion.form>
-          ) : (
-            <motion.form
-              key="step2"
-              className={styles.form}
-              variants={stepVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.25 }}
-              onSubmit={handleOtpSubmit}
-            >
-              <div className={styles.fieldGroup}>
-                <label className={styles.label} htmlFor="otpCode">
-                  Verification code
-                </label>
-                <input
-                  id="otpCode"
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className={`${styles.input} ${errorMsg ? styles.error : ''}`}
-                  placeholder="12345"
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value)}
-                  required
-                  disabled={isLoading}
-                  autoFocus
-                />
-                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-                  Check your Telegram app for the verification code.
-                </p>
-              </div>
+            {error && <p className={styles.error}>⚠ {error}</p>}
 
-              {errorMsg && (
-                <p className={styles.errorMessage}>
-                  <span>⚠</span> {errorMsg}
-                </p>
-              )}
+            <button type="submit" className={styles.button} disabled={loading || code.length < 4}>
+              {loading ? <span className={styles.spinner} /> : 'Verify code'}
+            </button>
 
-              <button
-                type="submit"
-                className={styles.button}
-                disabled={isLoading || otpCode.length < 4}
-              >
-                {isLoading ? <span className={styles.spinner} /> : 'Verify code'}
-              </button>
+            <button type="button" className={styles.backBtn}
+              onClick={() => { setStep(1); setError(null); }}>
+              Back
+            </button>
+          </form>
+        )}
+      </div>
 
-              <button
-                type="button"
-                className={styles.buttonBack}
-                onClick={() => { setStep(1); setErrorMsg(null); setStatus('idle'); }}
-              >
-                Back
-              </button>
-            </motion.form>
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* In-app guide modal — only mounted when showGuide is true */}
-      <AnimatePresence>
-        {showGuide && <ApiGuide onClose={() => setShowGuide(false)} />}
-      </AnimatePresence>
+      {showGuide && <ApiGuide onClose={() => setShowGuide(false)} />}
     </div>
   );
 }

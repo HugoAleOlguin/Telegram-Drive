@@ -1,194 +1,112 @@
-/* === API GUIDE MODAL — Telegram Desktop Style === */
-
 .backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
+  position: fixed; inset: 0; z-index: 100;
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(3px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   padding: 16px;
 }
 
 .panel {
-  width: 100%;
-  max-width: 460px;
+  width: 100%; max-width: 460px;
   background: var(--surface-panel);
   border: 1px solid var(--surface-divider);
   border-radius: var(--radius-xl);
   padding: 24px;
   box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-height: 88vh;
-  overflow-y: auto;
+  display: flex; flex-direction: column;
+  gap: 16px; max-height: 88vh; overflow-y: auto;
 }
 
-/* Header */
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
 }
 
 .badge {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--tg-blue);
-  text-transform: uppercase;
+  font-size: var(--text-xs); font-weight: 600;
+  color: var(--tg-blue); text-transform: uppercase;
   letter-spacing: 0.07em;
 }
 
-.closeBtn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 13px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: var(--radius-xs);
-  line-height: 1;
+.close {
+  background: none; border: none;
+  color: var(--text-muted); font-size: 13px;
+  cursor: pointer; padding: 4px 8px;
+  border-radius: var(--radius-xs); line-height: 1;
   transition: color var(--transition-fast), background var(--transition-fast);
 }
 
-.closeBtn:hover {
-  color: var(--text-primary);
-  background: var(--surface-hover);
-}
+.close:hover { color: var(--text-primary); background: var(--surface-hover); }
 
-/* Progress dots */
 .dots {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  display: flex; align-items: center; gap: 5px;
 }
 
 .dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  border: none;
-  background: var(--surface-divider);
-  cursor: pointer;
-  padding: 0;
+  width: 5px; height: 5px; border-radius: 50%;
+  border: none; background: var(--surface-divider);
+  cursor: pointer; padding: 0;
   transition: all var(--transition-normal);
 }
 
-.dot:hover {
-  background: var(--text-muted);
+.dot:hover { background: var(--text-muted); }
+
+.dot.active {
+  width: 16px; border-radius: 3px; background: var(--tg-blue);
 }
 
-.dotActive {
-  width: 16px;
-  border-radius: 3px;
-  background: var(--tg-blue);
-}
+.dot.done { background: var(--color-success); }
 
-.dotDone {
-  background: var(--color-success);
-}
-
-/* Slide */
 .slide {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  display: flex; flex-direction: column; gap: 14px;
 }
 
-.imageWrapper {
-  width: 100%;
-  border-radius: var(--radius-md);
-  overflow: hidden;
+.imageWrap {
+  width: 100%; border-radius: var(--radius-md); overflow: hidden;
   border: 1px solid var(--surface-divider);
-  background: var(--surface-bg);
-  line-height: 0;
+  background: var(--surface-bg); line-height: 0;
 }
 
-.screenshot {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
+.img { width: 100%; height: auto; display: block; object-fit: cover; }
 
-/* Text block */
-.textBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
+.text { display: flex; flex-direction: column; gap: 5px; }
 
-.stepLabel {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  font-weight: 500;
-  text-transform: uppercase;
+.count {
+  font-size: var(--text-xs); color: var(--text-muted);
+  font-weight: 500; text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin: 0;
 }
 
-.stepTitle {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  letter-spacing: -0.01em;
+.title {
+  font-size: var(--text-lg); font-weight: 700;
+  color: var(--text-primary); letter-spacing: -0.01em;
 }
 
-.stepDescription {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
+.desc {
+  font-size: var(--text-sm); color: var(--text-secondary);
   line-height: 1.6;
-  margin: 0;
 }
 
-/* Navigation */
-.nav {
-  display: flex;
-  gap: 8px;
-  margin-top: 4px;
-}
+.nav { display: flex; gap: 8px; margin-top: 4px; }
 
-.navBtnSecondary {
-  flex: 1;
-  padding: 9px;
-  background: transparent;
-  border: 1px solid var(--surface-divider);
+.navSecondary {
+  flex: 1; padding: 9px;
+  background: transparent; border: 1px solid var(--surface-divider);
   border-radius: var(--radius-md);
-  color: var(--text-secondary);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  cursor: pointer;
+  color: var(--text-secondary); font-family: var(--font-sans);
+  font-size: var(--text-sm); cursor: pointer;
   transition: all var(--transition-fast);
 }
 
-.navBtnSecondary:hover:not(:disabled) {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-}
+.navSecondary:hover:not(:disabled) { background: var(--surface-hover); color: var(--text-primary); }
+.navSecondary:disabled { opacity: 0.25; cursor: not-allowed; }
 
-.navBtnSecondary:disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-}
-
-.navBtnPrimary {
-  flex: 2;
-  padding: 9px;
-  background: var(--tg-blue);
-  border: none;
+.navPrimary {
+  flex: 2; padding: 9px;
+  background: var(--tg-blue); border: none;
   border-radius: var(--radius-md);
-  color: white;
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  cursor: pointer;
+  color: white; font-family: var(--font-sans);
+  font-size: var(--text-sm); font-weight: 600; cursor: pointer;
   transition: background var(--transition-fast);
 }
 
-.navBtnPrimary:hover {
-  background: var(--tg-blue-dark);
-}
+.navPrimary:hover { background: var(--tg-blue-dark); }

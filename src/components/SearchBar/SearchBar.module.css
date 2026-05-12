@@ -44,19 +44,13 @@
   display: none;
 }
 
-.clearBtn {
-  position: absolute;
-  right: var(--space-3);
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: var(--text-xs);
-  padding: 2px 4px;
+.clear {
+  position: absolute; right: var(--space-3);
+  background: transparent; border: none;
+  color: var(--text-muted); cursor: pointer;
+  font-size: var(--text-xs); padding: 2px 4px;
   border-radius: var(--radius-full);
   transition: color var(--transition-fast);
 }
 
-.clearBtn:hover {
-  color: var(--text-primary);
-}
+.clear:hover { color: var(--text-primary); }

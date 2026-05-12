@@ -52,8 +52,7 @@ impl TelegramClient {
         tokio::spawn(async move {
             loop {
                 match bg_client.step().await {
-                    Ok(true) => {}   // Más trabajo pendiente
-                    Ok(false) => {}  // Sin trabajo, espera
+                    Ok(_) => {} // Evento procesado o ping completado
                     Err(e) => {
                         log::error!("Error en el worker de Telegram: {}", e);
                         break;

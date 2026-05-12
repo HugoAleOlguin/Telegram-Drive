@@ -1,89 +1,42 @@
-/* === FOLDER TREE STYLES === */
-
 .tree {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: flex; flex-direction: column; gap: 2px;
 }
 
 .item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  width: 100%;
-  padding: var(--space-2) var(--space-3);
-  background: transparent;
-  border: none;
+  display: flex; align-items: center; gap: var(--space-2);
+  width: 100%; padding: var(--space-2) var(--space-3);
+  background: transparent; border: none;
   border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  text-align: left;
-  cursor: pointer;
+  color: var(--text-secondary); font-family: var(--font-sans);
+  font-size: var(--text-sm); text-align: left; cursor: pointer;
   transition: all var(--transition-fast);
 }
 
-.item:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-}
+.item:hover { background: var(--surface-hover); color: var(--text-primary); }
 
 .item.active {
   background: hsl(200 100% 40% / 0.15);
-  color: var(--tg-blue);
-  font-weight: 500;
+  color: var(--tg-blue); font-weight: 500;
 }
 
-.root {
-  font-weight: 500;
-}
-
-.icon {
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-.name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.createForm {
-  padding: var(--space-1) var(--space-2);
-}
-
-.createInput {
-  width: 100%;
-  padding: var(--space-2) var(--space-3);
-  background: var(--surface-overlay);
+.input {
+  width: 100%; padding: var(--space-2) var(--space-3);
+  background: var(--surface-input);
   border: 1px solid var(--tg-blue);
   border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  outline: none;
+  color: var(--text-primary); font-family: var(--font-sans);
+  font-size: var(--text-sm); outline: none;
+  margin-top: var(--space-1);
 }
 
-.newFolder {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  width: 100%;
-  padding: var(--space-2) var(--space-3);
-  background: transparent;
-  border: 1px dashed var(--surface-divider);
+.add {
+  display: flex; align-items: center; gap: var(--space-2);
+  width: 100%; padding: var(--space-2) var(--space-3);
+  background: transparent; border: 1px dashed var(--surface-divider);
   border-radius: var(--radius-sm);
-  color: var(--text-muted);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  margin-top: var(--space-2);
+  color: var(--text-muted); font-family: var(--font-sans);
+  font-size: var(--text-sm); cursor: pointer;
+  transition: all var(--transition-fast); margin-top: var(--space-2);
 }
 
-.newFolder:hover {
-  border-color: var(--tg-blue);
-  color: var(--tg-blue);
-  background: hsl(200 100% 40% / 0.05);
-}
+.add:hover { border-color: var(--tg-blue); color: var(--tg-blue); }

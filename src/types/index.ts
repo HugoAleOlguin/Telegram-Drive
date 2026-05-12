@@ -5,6 +5,7 @@ export type AuthStatus =
   | 'idle'
   | 'entering_phone'
   | 'waiting_code'
+  | 'verifying_code'
   | 'waiting_password'
   | 'authenticated'
   | 'error';
