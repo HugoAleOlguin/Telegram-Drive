@@ -1,6 +1,6 @@
 [package]
 name = "telegram-drive"
-version = "0.1.0"
+version = "1.5.1"
 description = "Telegram Drive — Tu Google Drive gratis e ilimitado"
 authors = ["Hugo"]
 edition = "2021"
@@ -32,10 +32,6 @@ grammers-session = "0.7"
 
 # --- Base de datos local (índice de metadatos) ---
 rusqlite = { version = "0.32", features = ["bundled"] }
-
-# --- Cifrado AES-256-GCM (opt-in por carpeta) ---
-aes-gcm = "0.10"
-rand = "0.8"
 
 # --- Manejo de errores ---
 anyhow = "1"

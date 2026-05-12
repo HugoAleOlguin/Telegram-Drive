@@ -85,6 +85,9 @@ $RECYCLE.BIN/
 
 # =============================================
 # Agente de IA (uso interno)
-# =============================================
 .agent/
 .agent-loadout
+
+# Generated platform icons (desktop-only app)
+src-tauri/icons/android/
+src-tauri/icons/ios/
