@@ -5,18 +5,17 @@ import { listFiles } from '../../services/tauri-bridge';
 import styles from './FileExplorer.module.css';
 
 interface Props {
-  folderId: string;
   view: 'grid' | 'list';
   searchQuery: string;
 }
 
-export function FileExplorer({ folderId, view, searchQuery }: Props) {
+export function FileExplorer({ view, searchQuery }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
   const { data: files = [], isLoading } = useQuery({
-    queryKey: ['files', folderId],
-    queryFn: () => listFiles(folderId),
+    queryKey: ['files'],
+    queryFn: listFiles,
     staleTime: 30_000,
   });
 

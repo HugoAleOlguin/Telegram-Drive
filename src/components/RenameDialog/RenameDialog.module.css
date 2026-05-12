@@ -1,0 +1,12 @@
+.overlay { position:fixed; inset:0; z-index:250; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; animation:fadeIn 0.1s ease; }
+.dialog { background:var(--surface-panel); border:1px solid var(--surface-divider); border-radius:12px; padding:16px; width:320px; box-shadow:var(--shadow-lg); animation:scaleIn 0.12s ease-out; }
+.title { font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:12px; }
+.input { width:100%; padding:8px 10px; background:var(--surface-input); border:1px solid var(--surface-divider); border-radius:6px; color:var(--text-primary); font-family:var(--font-sans); font-size:13px; outline:none; transition:border-color var(--transition-fast); }
+.input:focus { border-color:var(--tg-blue); }
+.actions { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+.cancelBtn { padding:6px 14px; background:transparent; border:1px solid var(--surface-divider); border-radius:6px; color:var(--text-secondary); font-family:var(--font-sans); font-size:12px; cursor:pointer; transition:all var(--transition-fast); }
+.cancelBtn:hover { background:var(--surface-hover); }
+.confirmBtn { padding:6px 14px; background:var(--tg-blue); border:none; border-radius:6px; color:white; font-family:var(--font-sans); font-size:12px; font-weight:600; cursor:pointer; transition:background var(--transition-fast); }
+.confirmBtn:hover { background:var(--tg-blue-dark); }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes scaleIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
