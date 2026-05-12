@@ -31,6 +31,14 @@
       "icons/icon.icns",
       "icons/icon.ico",
       "icons/icon.png"
-    ]
+    ],
+    "windows": {
+      "wix": {
+        "language": [
+          "es-ES",
+          "en-US"
+        ]
+      }
+    }
   }
 }

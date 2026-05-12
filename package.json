@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "portable": "powershell -Command \"$exe='src-tauri/target/release/telegram-drive.exe'; $name='TelegramDrive_v1.5.1_portable'; if(Test-Path $exe){ Remove-Item -Force 'dist_portable' -ErrorAction SilentlyContinue; New-Item -ItemType Directory -Path 'dist_portable' -Force | Out-Null; Copy-Item $exe 'dist_portable/Telegram Drive.exe'; Compress-Archive -Path 'dist_portable/*' -DestinationPath \"$name.zip\" -Force; Remove-Item -Recurse -Force 'dist_portable'; Write-Host 'Portable creado: '$name'.zip' -ForegroundColor Green }else{ Write-Host 'Primero ejecuta: npm run tauri build' -ForegroundColor Yellow }\""
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.9",

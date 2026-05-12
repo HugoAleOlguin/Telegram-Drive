@@ -91,3 +91,7 @@ $RECYCLE.BIN/
 # Generated platform icons (desktop-only app)
 src-tauri/icons/android/
 src-tauri/icons/ios/
+
+# Portable builds
+dist_portable/
+*.zip
