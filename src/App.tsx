@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoginPage } from './pages/LoginPage/LoginPage';
 import { DrivePage } from './pages/DrivePage/DrivePage';
 import { authCheckSession, authLogout } from './services/tauri-bridge';
+import { TranslationProvider } from './locales';
 import './styles/global.css';
 
 const queryClient = new QueryClient({
@@ -50,7 +51,9 @@ function AppContent() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContent />
+      <TranslationProvider>
+        <AppContent />
+      </TranslationProvider>
     </QueryClientProvider>
   );
 }

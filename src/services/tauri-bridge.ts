@@ -6,8 +6,6 @@ import type {
   TelegramCredentials,
   DriveFolder,
   DriveFile,
-  UploadTask,
-  SearchResult,
 } from '../types';
 
 // --- Autenticación ---
@@ -51,41 +49,37 @@ export async function deleteFolder(folderId: string): Promise<void> {
 
 // --- Archivos ---
 
-/** Lista los archivos de una carpeta (desde el índice SQLite local) */
-export async function listFiles(folderId: string): Promise<DriveFile[]> {
-  return invoke('list_files', { folderId });
+/** Lista todos los archivos del drive */
+export async function listFiles(): Promise<DriveFile[]> {
+  return invoke('list_files');
 }
 
-/** Sube un archivo al Drive con progreso via eventos Tauri */
-export async function uploadFile(filePath: string, folderId: string): Promise<UploadTask> {
-  return invoke('upload_file', { filePath, folderId });
+/** Sube un archivo a Telegram */
+export async function uploadFile(filePath: string): Promise<string> {
+  return invoke('upload_file', { filePath });
 }
 
-/** Descarga un archivo a un directorio local */
+/** Descarga un archivo desde Telegram */
 export async function downloadFile(fileId: string, destPath: string): Promise<void> {
   return invoke('download_file', { fileId, destPath });
 }
 
-/** Elimina un archivo (elimina el mensaje de Telegram) */
+/** Elimina un archivo (borra el mensaje de Telegram + índice local) */
 export async function deleteFile(fileId: string): Promise<void> {
   return invoke('delete_file', { fileId });
 }
 
-/** Renombra un archivo (edita el caption del mensaje) */
+/** Renombra un archivo (solo nombre local, no modifica Telegram) */
 export async function renameFile(fileId: string, newName: string): Promise<void> {
   return invoke('rename_file', { fileId, newName });
 }
 
-// --- Búsqueda ---
-
-/** Búsqueda full-text sobre el índice SQLite local */
-export async function searchFiles(query: string): Promise<SearchResult> {
-  return invoke('search_files', { query });
+/** Obtiene/cachea thumbnail para un archivo, devuelve ruta local */
+export async function getThumbnail(fileId: string): Promise<string> {
+  return invoke('get_thumbnail', { fileId });
 }
 
-// --- Sincronización ---
-
-/** Fuerza una re-sincronización del índice local con Telegram */
-export async function syncIndex(): Promise<void> {
-  return invoke('sync_index');
+/** Sincroniza el índice local con Saved Messages de Telegram */
+export async function syncFiles(): Promise<DriveFile[]> {
+  return invoke('sync_files');
 }
