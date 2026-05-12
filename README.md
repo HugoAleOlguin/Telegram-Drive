@@ -1,154 +1,305 @@
-# Telegram Drive
+<div align="center">
+  <img src="src-tauri/icons/icon.png" alt="Telegram Drive" width="128" height="128">
 
-Turn your Telegram account into a free, unlimited cloud storage drive. Telegram Drive lets you upload, organize, and access any file directly from your desktop — no storage limits, no monthly fees.
+  # 🚀 Telegram Drive
+
+  <p><strong>Turn your Telegram Saved Messages into unlimited, private cloud storage.</strong></p>
+  <p>No third-party servers. No subscriptions. No bots. Just you and Telegram.</p>
+
+  <p>
+    <a href="https://github.com/HugoAleOlguin/Telegram-Drive/releases">
+      <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2FHugoAleOlguin%2FTelegram-Drive%2Freleases%2Flatest&query=%24.tag_name&style=for-the-badge&logo=windows&logoColor=white&label=Download&color=3b82f6" alt="Download">
+    </a>
+  </p>
+
+  <p>
+    <img src="https://img.shields.io/badge/version-1.5.1-3b82f6?style=flat-square&logo=semver" alt="Version">
+    <img src="https://img.shields.io/badge/Windows_10%2B-00a4ef?style=flat-square&logo=windows&logoColor=white" alt="Windows">
+    <img src="https://img.shields.io/badge/license-MIT-22c55e?style=flat-square" alt="License">
+    <img src="https://img.shields.io/badge/built_with-Rust_%7C_React_%7C_Tauri-f97316?style=flat-square&logo=rust" alt="Built With">
+    <img src="https://img.shields.io/badge/contributions-welcome-8b5cf6?style=flat-square" alt="Contributions">
+  </p>
+
+  <br>
+
+  <table>
+    <tr>
+      <td width="33%" align="center"><img src="public/guia/1%20-%20guide.png" alt="Login" width="280"></td>
+      <td width="33%" align="center"><img src="public/guia/2%20-%20guide.png" alt="Drive" width="280"></td>
+      <td width="33%" align="center"><img src="public/guia/4%20-%20guide%20-%20Editado.png" alt="Settings" width="280"></td>
+    </tr>
+  </table>
+</div>
+
+<br>
 
 ---
 
-## What is Telegram Drive?
+## ✨ What is Telegram Drive?
 
-Telegram Drive is a desktop application that uses the Telegram network as a personal cloud storage backend. Because Telegram allows large file transfers with no storage cap on its servers, this app gives you unlimited space for your documents, photos, videos, and archives.
+**Telegram Drive** is a **Windows desktop application** that transforms your Telegram Saved Messages into a full-featured cloud drive with a modern, Google-Drive-like interface.
 
-Your files are stored in your own Telegram account. You own your data. There are no third-party servers involved beyond Telegram itself.
+📁 **Upload**, 📥 **download**, ✏️ **rename**, 🗑️ **delete** — all from a clean native app.  
+Your files are stored as regular messages in your private Telegram chat. **They never leave your account.**
+
+### Why Telegram Drive?
+
+| ❌ Instead of... | ✅ Use Telegram Drive |
+|---|---|
+| Paying for Google Drive / iCloud / OneDrive | **Free** — Telegram doesn't charge for storage |
+| Uploading to third-party file hosts | **Private** — only you can see your files |
+| Using Telegram's bare chat interface to find files | **Organized** — grouped by month, with filters & search |
+| Scrolling through endless messages to find a document | **Instant** — local index with search & sort |
+| Setting up bots, APIs, or self-hosted servers | **One-click install** — just download and run |
 
 ---
 
-## Key Features
-
-- Unlimited storage using your existing Telegram account
-- Upload and download any file type
-- Organize files into folders
-- Local index for fast file browsing
-- Optional AES-256 encryption per folder
-- Works on Windows, macOS, and Linux
-
----
-
-## Before You Start: Get Your Telegram API Credentials
-
-To use Telegram Drive, you need to create a free personal API key from Telegram. This takes about two minutes and only needs to be done once.
-
-### Step 1 — Go to the Telegram developer portal
-
-Open your browser and navigate to:
-
-```
-https://my.telegram.org
-```
-
-### Step 2 — Log in with your phone number
-
-Enter your phone number in international format (for example, +001155556666) and click "Next". Telegram will send a confirmation code to your Telegram app — not to SMS.
-
-### Step 3 — Open API development tools
-
-Once logged in, you will see a menu. Click on "API development tools".
-
-### Step 4 — Create a new application
-
-Fill in the form with any values you prefer:
-
-- App title: anything (for example, "My Drive")
-- Short name: any short word (for example, "drive")
-- Platform: select "Web"
-- Description: optional
-
-Click "Create application".
-
-### Step 5 — Copy your credentials
-
-After creating the app, you will see two values:
-
-- App api_id (a short number)
-- App api_hash (a long string of letters and numbers)
-
-Copy both. You will paste them into Telegram Drive when you first launch it.
+## 🎯 Features
 
 <div align="center">
-  <img src="guia/1 - guide.png" width="48%" alt="Step 1: Enter phone number at my.telegram.org" />
-  <img src="guia/2 - guide.png" width="48%" alt="Step 2: Select API development tools" />
-  <br/>
-  <img src="guia/3 - guide.png" width="48%" alt="Step 3: Fill in the new application form" />
-  <img src="guia/4 - guide - Editado.png" width="48%" alt="Step 4: Copy your api_id and api_hash" />
+  <table>
+    <tr>
+      <td align="center">📤</td>
+      <td><strong>Multi-file upload</strong><br><small>Select multiple files at once with real-time progress</small></td>
+      <td align="center">📂</td>
+      <td><strong>Organized by month</strong><br><small>Files grouped automatically, like Google Photos</small></td>
+    </tr>
+    <tr>
+      <td align="center">📥</td>
+      <td><strong>One-click download</strong><br><small>Save dialog opens immediately</small></td>
+      <td align="center">✏️</td>
+      <td><strong>Local rename</strong><br><small>Custom names that only you see</small></td>
+    </tr>
+    <tr>
+      <td align="center">🗑️</td>
+      <td><strong>Permanent delete</strong><br><small>Removes from Telegram + local index</small></td>
+      <td align="center">🔍</td>
+      <td><strong>Search & filter</strong><br><small>Filter by type (IMG, PDF, ZIP...) + sort by date/name/size</small></td>
+    </tr>
+    <tr>
+      <td align="center">🔄</td>
+      <td><strong>Sync</strong><br><small>Pull new files from Telegram automatically</small></td>
+      <td align="center">🎨</td>
+      <td><strong>Dark & Light themes</strong><br><small>Choose your preferred look</small></td>
+    </tr>
+    <tr>
+      <td align="center">🌐</td>
+      <td><strong>EN / ES</strong><br><small>Full English and Spanish support</small></td>
+      <td align="center">🖱️</td>
+      <td><strong>Right-click menu</strong><br><small>Quick actions on any file</small></td>
+    </tr>
+    <tr>
+      <td align="center">📋</td>
+      <td><strong>Grid & List views</strong><br><small>Toggle between visual grid or compact list</small></td>
+      <td align="center">📦</td>
+      <td><strong>Drag & drop</strong><br><small>Drop files anywhere to start upload</small></td>
+    </tr>
+  </table>
 </div>
 
 ---
 
-## Download
+## 📸 How to Get Your API Credentials
 
-Download the latest installer for your operating system from the [Releases page](https://github.com/HugoAleOlguin/telegram-drive/releases).
+> Telegram Drive connects directly to Telegram's servers using their API.  
+> You need to get **free API credentials** from Telegram. It takes 2 minutes.
 
-| Operating System | File to download              |
-|------------------|-------------------------------|
-| Windows          | TelegramDrive_x.x.x_x64.msi  |
+<details>
+  <summary><strong>👆 Click here to see the step-by-step guide with screenshots</strong></summary>
 
----
+  <br>
 
-## Installation
+  ### **Step 1:** Go to my.telegram.org
 
-### Windows
+  <div align="center">
+    <kbd><img src="public/guia/1%20-%20guide.png" alt="Step 1: my.telegram.org" width="420"></kbd>
+  </div>
 
-1. Download the `.msi` installer.
-2. Double-click to run it.
-3. Follow the on-screen steps.
-4. Launch Telegram Drive from the Start Menu.
+  Open [my.telegram.org](https://my.telegram.org) in your browser and sign in with your phone number (the same one you use on Telegram).
 
----
+  <br>
 
-## First Launch
+  ### **Step 2:** Open API Development Tools
 
-1. Open Telegram Drive.
-2. Enter your Telegram phone number.
-3. Enter the confirmation code sent to your Telegram app.
-4. Paste your `api_id` and `api_hash` from the step above.
-5. You are ready. Start uploading files.
+  <div align="center">
+    <kbd><img src="public/guia/2%20-%20guide.png" alt="Step 2: API Development Tools" width="420"></kbd>
+  </div>
 
----
+  Click on **"API Development Tools"** — you'll be taken to the app creation page.
 
-## Privacy and Security
+  <br>
 
-- Your `api_id` and `api_hash` are stored locally on your computer only.
-- Telegram Drive never sends your credentials to any external server.
-- Your files go directly from your computer to Telegram's servers.
-- You can enable folder-level AES-256 encryption for sensitive files.
+  ### **Step 3:** Create a New Application
 
----
+  <div align="center">
+    <kbd><img src="public/guia/3%20-%20guide.png" alt="Step 3: Create Application" width="420"></kbd>
+  </div>
 
-## Frequently Asked Questions
+  Fill in the form:
+  - **App title**: anything (e.g. "My Drive")
+  - **Short name**: anything short
+  - **URL**: optional, leave blank or use `https://telegram.org`
+  - **Platform**: choose "Desktop"
 
-**Is this against Telegram's terms of service?**
-Using the Telegram API for personal automation and storage is permitted for personal use under Telegram's terms. Telegram Drive is a personal desktop client, not a bot or commercial service.
+  Click **"Create application"**.
 
-**Will my files disappear if I uninstall the app?**
-No. Your files are stored in your Telegram account. Uninstalling the app does not affect them.
+  <br>
 
-**What is the maximum file size?**
-Telegram supports files up to 2 GB per upload.
+  ### **Step 4:** Copy Your Credentials
 
-**Can I access my files without the app?**
-Yes. Files uploaded by Telegram Drive are stored in a private Telegram chat and can be accessed from any Telegram client.
+  <div align="center">
+    <kbd><img src="public/guia/4%20-%20guide%20-%20Editado.png" alt="Step 4: Copy Credentials" width="420"></kbd>
+  </div>
 
-**Is my data encrypted?**
-Files are transmitted using Telegram's built-in MTProto encryption. You can additionally enable AES-256 encryption per folder within the app for an extra layer of protection.
+  At the top of the page you'll see:
+  - **App api_id** → a number (e.g. `1234567`)\*
+  - **App api_hash** → a long string of letters and numbers
 
----
+  > ⚠️ **Important:** Keep these private. They're like a username and password for your app.
 
-## System Requirements
+  Copy both and paste them into Telegram Drive when asked. **That's it!** 🎉
 
-| Component        | Minimum                     |
-|------------------|-----------------------------|
-| Operating System | Windows 10, macOS 11, Ubuntu 20.04 |
-| RAM              | 512 MB                      |
-| Disk space       | 100 MB for installation     |
-| Internet         | Required for transfers      |
+</details>
 
 ---
 
-## License
+## ⬇️ Download & Install
 
-This project is released under the MIT License. See the [LICENSE](LICENSE) file for full details.
+<div align="center">
+  <a href="https://github.com/HugoAleOlguin/Telegram-Drive/releases">
+    <img src="https://img.shields.io/badge/📦_Download_Telegram_Drive_1.5.1_for_Windows-3b82f6?style=for-the-badge&logo=windows&logoColor=white" alt="Download">
+  </a>
+</div>
+
+### System Requirements
+
+| Requirement | Detail |
+|-------------|--------|
+| **OS** | Windows 10 or later (64-bit) |
+| **Storage** | ~150 MB for the app + local database grows with your files |
+| **Internet** | Required to connect to Telegram |
+| **Account** | A regular Telegram account (not a bot) |
+
+### Installation Steps
+
+1. **Download** the `.msi` or `.exe` installer from the [Releases page](https://github.com/HugoAleOlguin/Telegram-Drive/releases)
+2. **Run** the installer — follow the on-screen prompts
+3. **Launch** Telegram Drive from your Start Menu or Desktop
+4. **Enter** your API ID, API Hash, and phone number
+5. **Check** Telegram for the verification code and enter it
+6. **Done!** 🎉 Start uploading files
+
+> No need to install Node.js, Rust, Python, or anything else.  
+> One installer, one click, you're done.
 
 ---
 
-## Contributing
+## 🔐 Security & Privacy FAQ
 
-Telegram Drive is open source. Bug reports, feature requests, and pull requests are welcome on the [GitHub repository](https://github.com/HugoAleOlguin/telegram-drive).
+<details>
+  <summary><strong>🔒 Where are my files stored?</strong></summary>
+  Inside your Telegram Saved Messages chat — the private chat you have with yourself. Files are stored as document messages on Telegram's servers.
+</details>
+
+<details>
+  <summary><strong>👁️ Can anyone else see my files?</strong></summary>
+  No. They're in your private chat. Only you can access them (unless you share your Telegram account or your session file).
+</details>
+
+<details>
+  <summary><strong>📡 Does the app send data anywhere?</strong></summary>
+  No. Zero telemetry, zero analytics, zero third-party servers. The app only communicates directly with Telegram's MTProto servers using your credentials. There is no middleman.
+</details>
+
+<details>
+  <summary><strong>🔑 Where are my API keys stored?</strong></summary>
+  On your local machine in a SQLite database. They are never sent anywhere except to Telegram's servers during authentication.
+</details>
+
+<details>
+  <summary><strong>💾 What happens if I uninstall the app?</strong></summary>
+  Your files remain safely in Telegram. You only lose the local index (which files you uploaded), but syncing again will restore it.
+</details>
+
+<details>
+  <summary><strong>💳 Is there any cost?</strong></summary>
+  **Zero.** Telegram doesn't charge for storing messages. The app is free and open source under the MIT license.
+</details>
+
+<details>
+  <summary><strong>📏 Is there a storage limit?</strong></summary>
+  Telegram limits individual files to **2 GB** (or 4 GB with Telegram Premium). There is no practical limit on the number of files. Most users never hit a cap.
+</details>
+
+<details>
+  <summary><strong>📱 Can I access my files from my phone?</strong></summary>
+  Yes! Open Telegram on your phone, go to **Saved Messages** — all your files are there as document messages. The app is just a convenient way to manage them.
+</details>
+
+---
+
+## ❓ Frequently Asked Questions
+
+<details>
+  <summary><strong>🎯 Who is this for?</strong></summary>
+  Anyone who wants a free, private, unlimited cloud drive without trusting third-party services. Perfect for backing up documents, photos, and files between devices.
+</details>
+
+<details>
+  <summary><strong>📤 Can I share files with others?</strong></summary>
+  Files in Saved Messages are private. To share, you can manually forward them from Telegram. A sharing feature may be added in future versions.
+</details>
+
+<details>
+  <summary><strong>⚡ Why is the app slow with many files?</strong></summary>
+  The file list comes from a local SQLite index, which is instant. Uploading/downloading depends on your internet speed and Telegram's servers (usually very fast).
+</details>
+
+<details>
+  <summary><strong>❓ I found a bug / have an idea</strong></summary>
+  Open an [issue](https://github.com/HugoAleOlguin/Telegram-Drive/issues) or start a [discussion](https://github.com/HugoAleOlguin/Telegram-Drive/discussions). Contributions welcome! 🙌
+</details>
+
+---
+
+## 🛠️ Build from Source (for Developers)
+
+<details>
+  <summary><strong>👨‍💻 Click here if you want to compile the app yourself</strong></summary>
+
+  ```powershell
+  # Prerequisites: Node.js 18+, Rust stable, Git
+
+  git clone https://github.com/HugoAleOlguin/Telegram-Drive.git
+  cd Telegram-Drive
+  npm install
+  npm run tauri build
+  ```
+
+  The installer will be generated at `src-tauri/target/release/bundle/msi/`.
+
+</details>
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+  <br>
+  <p>
+    <a href="https://github.com/HugoAleOlguin">
+      <img src="https://img.shields.io/badge/made_with_❤️_by-@HugoAleOlguin-3b82f6?style=for-the-badge" alt="Author">
+    </a>
+  </p>
+  <p>
+    <a href="https://github.com/HugoAleOlguin/Telegram-Drive/issues">🐛 Report Bug</a> •
+    <a href="https://github.com/HugoAleOlguin/Telegram-Drive/discussions">💡 Suggest Feature</a> •
+    <a href="https://hugoaleolguin.github.io/">🌐 Portfolio</a>
+  </p>
+  <br>
+  <sub>Telegram Drive is not affiliated with, endorsed by, or connected to Telegram Messenger LLP.</sub>
+</div>
