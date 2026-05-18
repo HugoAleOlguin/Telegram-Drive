@@ -8,13 +8,14 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "portable": "powershell -Command \"$exe='src-tauri/target/release/telegram-drive.exe'; $name='TelegramDrive_v1.5.1_portable'; if(Test-Path $exe){ Remove-Item -Force 'dist_portable' -ErrorAction SilentlyContinue; New-Item -ItemType Directory -Path 'dist_portable' -Force | Out-Null; Copy-Item $exe 'dist_portable/Telegram Drive.exe'; Compress-Archive -Path 'dist_portable/*' -DestinationPath \"$name.zip\" -Force; Remove-Item -Recurse -Force 'dist_portable'; Write-Host 'Portable creado: '$name'.zip' -ForegroundColor Green }else{ Write-Host 'Primero ejecuta: npm run tauri build' -ForegroundColor Yellow }\""
+    "portable": "powershell -Command \"$ver=(Select-String -Path src-tauri/Cargo.toml -Pattern 'version = \\\"(.+)\\\"' | ForEach-Object { $_.Matches[0].Groups[1].Value }); $exe='src-tauri/target/release/telegram-drive.exe'; $name='TelegramDrive_v'+$ver+'_portable'; if(Test-Path $exe){ Remove-Item -Force 'dist_portable' -ErrorAction SilentlyContinue; New-Item -ItemType Directory -Path 'dist_portable' -Force | Out-Null; Copy-Item $exe 'dist_portable/Telegram Drive.exe'; Compress-Archive -Path 'dist_portable/*' -DestinationPath \\\"$name.zip\\\" -Force; Remove-Item -Recurse -Force 'dist_portable'; Write-Host ('Portable creado: '+$name+'.zip') -ForegroundColor Green }else{ Write-Host 'Primero ejecuta: npm run tauri build' -ForegroundColor Yellow }\""
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.9",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-dialog": "^2.7.1",
     "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-process": "^2.3.1",
     "@tauri-apps/plugin-shell": "^2.3.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

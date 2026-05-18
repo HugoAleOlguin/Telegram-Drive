@@ -33,6 +33,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
             commands::auth::auth_login,
             commands::auth::auth_verify_code,
@@ -48,6 +49,9 @@ pub fn run() {
             commands::folders::list_folders,
             commands::folders::create_folder,
             commands::folders::delete_folder,
+            commands::updater::check_update,
+            commands::updater::download_update,
+            commands::updater::install_update,
         ])
         .run(tauri::generate_context!())
         .expect("Error al inicializar Telegram Drive");

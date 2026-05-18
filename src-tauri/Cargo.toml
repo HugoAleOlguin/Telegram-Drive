@@ -18,6 +18,7 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
+tauri-plugin-process = "2"
 
 # --- Serialización ---
 serde = { version = "1", features = ["derive"] }
@@ -40,6 +41,9 @@ thiserror = "1"
 # --- Logging ---
 log = "0.4"
 env_logger = "0.11"
+
+# --- HTTP client (para auto-update) ---
+ureq = "2"
 
 # --- Utils ---
 uuid = { version = "1", features = ["v4"] }

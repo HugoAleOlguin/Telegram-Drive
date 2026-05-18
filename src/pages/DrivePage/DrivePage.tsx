@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import { open as openDialog, save } from '@tauri-apps/plugin-dialog';
 import { uploadFile, listFiles, deleteFile, syncFiles, downloadFile, renameFile } from '../../services/tauri-bridge';
+import { checkForUpdate, downloadUpdate, installUpdate } from '../../services/updater';
+import type { UpdateState } from '../../services/updater';
 import type { DriveFile } from '../../types';
 import { useTranslation } from '../../locales';
 import { ContextMenu, type ContextMenuItem } from '../../components/ContextMenu/ContextMenu';
@@ -24,6 +26,7 @@ function IconRename(){return<svg viewBox="0 0 24 24" width="13" height="13" fill
 function IconSun(){return<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>}
 function IconMoon(){return<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>}
 function IconSettings(){return<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>}
+function IconUpdate(){return<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>}
 
 // ─── File helpers ──────────────────────────────────────────────────
 const FP:Record<string,{d:string}>={image:{d:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M10 13l-1 1 2 2 3-3 2 2v3H8l3-4z'},video:{d:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M10 11l5 3-5 3z'},audio:{d:'M9 18V5l12-2v13 M9 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0 M21 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0'},pdf:{d:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M8 13h8 M8 17h6 M10 9H8'},archive:{d:'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z M12 22V12'},code:{d:'M16 18l6-6-6-6 M8 6l-6 6 6 6'},doc:{d:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8'},other:{d:'M7 21h10a2 2 0 0 0 2-2V9.414l-5-5H7a2 2 0 0 0-2 2v14z M15 3v6h6'}};
@@ -48,7 +51,10 @@ function useTheme(){
 }
 
 // ─── Settings Modal ─────────────────────────────────────────────────
-function SettingsModal({theme,setTheme,lang,setLang,onClose}:{theme:string;setTheme:(v:'dark'|'light')=>void;lang:string;setLang:(v:'en'|'es')=>void;onClose:()=>void}){
+function SettingsModal({theme,setTheme,lang,setLang,onClose,updateState,onCheckUpdate,onDownload,onInstall}:{
+  theme:string;setTheme:(v:'dark'|'light')=>void;lang:string;setLang:(v:'en'|'es')=>void;onClose:()=>void;
+  updateState:UpdateState;onCheckUpdate:()=>void;onDownload:()=>void;onInstall:(path:string)=>void;
+}){
   const{t}=useTranslation();
   return(<div className={styles.modalOverlay} onClick={onClose}><div className={styles.settingsModal} onClick={e=>e.stopPropagation()}>
     <div className={styles.settingsHeader}><span className={styles.settingsTitle}>{t('settings')}</span><button className={styles.settingsClose} onClick={onClose}><IconClose/></button></div>
@@ -72,6 +78,67 @@ function SettingsModal({theme,setTheme,lang,setLang,onClose}:{theme:string;setTh
         <div className={`${styles.themeOption} ${lang==='es'?styles.themeActive:''}`} onClick={()=>setLang('es')}>
           <span style={{fontWeight:600,fontSize:14}}>ES</span><span>Español</span>
         </div>
+      </div>
+      {/* Update section */}
+      <div className={styles.settingsDivider}/>
+      <div className={styles.setLabel}>{t('check_update')}</div>
+      <div className={styles.updateSection}>
+        {updateState.type==='idle'&&(
+          <button className={styles.updateBtn} onClick={onCheckUpdate}>
+            <IconUpdate/><span>{t('check_update')}</span>
+          </button>
+        )}
+        {updateState.type==='checking'&&(
+          <div className={styles.updateStatus}>
+            <span className={styles.spinner}/>
+            <span>{t('update_checking')}</span>
+          </div>
+        )}
+        {updateState.type==='available'&&(
+          <div className={styles.updateAvailable}>
+            <div className={styles.updateInfo}>
+              <span className={styles.updateBadge}>{t('update_available',{version:updateState.info.latestVersion})}</span>
+            </div>
+            {updateState.info.releaseNotes&&(
+              <details className={styles.updateNotes}>
+                <summary>{t('update_notes')}</summary>
+                <pre>{updateState.info.releaseNotes}</pre>
+              </details>
+            )}
+            <button className={styles.updateBtnPrimary} onClick={onDownload}>
+              <span>{t('update_download')}</span>
+            </button>
+          </div>
+        )}
+        {updateState.type==='uptodate'&&(
+          <div className={styles.updateStatus}>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>{t('update_uptodate',{version:updateState.latestVersion})}</span>
+          </div>
+        )}
+        {updateState.type==='downloading'&&(
+          <div className={styles.updateStatus}>
+            <span className={styles.spinner}/>
+            <span>{t('update_downloading')}</span>
+          </div>
+        )}
+        {updateState.type==='downloaded'&&(
+          <div className={styles.updateAvailable}>
+            <div className={styles.updateInfo}>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>{t('update_downloaded')}</span>
+            </div>
+            <button className={styles.updateBtnPrimary} onClick={()=>onInstall(updateState.tempPath)}>
+              <span>{t('update_install')}</span>
+            </button>
+          </div>
+        )}
+        {updateState.type==='error'&&(
+          <div className={styles.updateError}>
+            <span>{updateState.message}</span>
+            <button className={styles.updateRetry} onClick={onCheckUpdate}>{t('retry')}</button>
+          </div>
+        )}
       </div>
       <div className={styles.settingsDivider}/>
       <div className={styles.settingsFooter}>
@@ -133,6 +200,24 @@ export function DrivePage({onLogout}:{onLogout:()=>void}){
   const[ctxMenu,setCtxMenu]=useState<{x:number;y:number;file:DriveFile|null}|null>(null);
   const[renameTarget,setRenameTarget]=useState<DriveFile|null>(null);
   const qc=useQueryClient();
+  const[updateState,setUpdateState]=useState<UpdateState>({type:'idle'});
+
+  const handleCheckUpdate=useCallback(async()=>{
+    setUpdateState({type:'checking'});
+    try{const info=await checkForUpdate();if(info.available){setUpdateState({type:'available',info})}else{setUpdateState({type:'uptodate',latestVersion:info.latestVersion})}}
+    catch(err){setUpdateState({type:'error',message:String(err)})}
+  },[]);
+
+  const handleDownload=useCallback(async()=>{
+    if(updateState.type!=='available'||!updateState.info.downloadUrl)return;
+    setUpdateState({type:'downloading',progress:0});
+    try{const tempPath=await downloadUpdate(updateState.info.downloadUrl);setUpdateState({type:'downloaded',tempPath})}
+    catch(err){setUpdateState({type:'error',message:String(err)})}
+  },[updateState]);
+
+  const handleInstall=useCallback(async(tempPath:string)=>{
+    try{await installUpdate(tempPath)}catch(err){setUpdateState({type:'error',message:String(err)})}
+  },[]);
 
   const{data:files=[],isLoading}=useQuery({queryKey:['files'],queryFn:listFiles,staleTime:10_000});
   useEffect(()=>{(async()=>{try{await syncFiles();qc.invalidateQueries({queryKey:['files']})}catch{}})()},[]);
@@ -262,7 +347,9 @@ export function DrivePage({onLogout}:{onLogout:()=>void}){
 
       {ctxMenu&&ctx&&<ContextMenu x={ctxMenu.x} y={ctxMenu.y} items={ctx} onClose={()=>setCtxMenu(null)}/>}
       {renameTarget&&<RenameDialog currentName={renameTarget.name} onConfirm={nn=>{hRen(renameTarget.id,nn);setRenameTarget(null)}} onCancel={()=>setRenameTarget(null)}/>}
-      {showSettings&&<SettingsModal theme={theme} setTheme={setTheme} lang={lang} setLang={setLang} onClose={()=>setShowSettings(false)}/>}
+      {showSettings&&<SettingsModal theme={theme} setTheme={setTheme} lang={lang} setLang={setLang}
+        updateState={updateState} onCheckUpdate={handleCheckUpdate} onDownload={handleDownload} onInstall={handleInstall}
+        onClose={()=>{setShowSettings(false);setUpdateState({type:'idle'})}}/>}
       {previewFile&&pi>=0&&<PreviewModal file={previewFile} files={pf} onClose={()=>setPreviewFile(null)}
         onPrev={()=>pi>0&&setPreviewFile(pf[pi-1])} onNext={()=>pi<pf.length-1&&setPreviewFile(pf[pi+1])}
         onDownload={()=>hDl(previewFile)} onDelete={()=>hDel(previewFile.id)}/>}

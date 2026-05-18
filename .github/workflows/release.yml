@@ -1,0 +1,50 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Tauri app
+        run: npm run tauri build
+
+      - name: Create portable ZIP
+        shell: pwsh
+        run: |
+          $ver = Select-String -Path src-tauri/Cargo.toml -Pattern 'version = "(.+)"' | ForEach-Object { $_.Matches[0].Groups[1].Value }
+          $exe = "src-tauri/target/release/telegram-drive.exe"
+          $zipName = "TelegramDrive_v${ver}_portable.zip"
+          Remove-Item -Force dist_portable -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Path dist_portable -Force | Out-Null
+          Copy-Item $exe "dist_portable/Telegram Drive.exe"
+          Compress-Archive -Path "dist_portable/*" -DestinationPath $zipName -Force
+          Remove-Item -Recurse -Force dist_portable
+          Write-Host "Portable creado: $zipName"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            src-tauri/target/release/telegram-drive.exe
+            TelegramDrive_*.zip
+          generate_release_notes: true

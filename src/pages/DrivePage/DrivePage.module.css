@@ -160,3 +160,22 @@
 .previewArrowL { left:10px; }
 .previewArrowR { right:10px; }
 .previewFooter { display:flex; align-items:center; gap:14px; padding:8px 12px; border-top:1px solid var(--surface-divider); font-size:11px; color:var(--text-muted); flex-shrink:0; }
+
+/* ─── Update Section ─────────────────────────────── */
+.updateSection { padding:0 12px 8px; }
+.updateBtn,.updateBtnPrimary{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:8px 12px;border-radius:8px;font-family:var(--font-sans);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--transition-fast)}
+.updateBtn{background:var(--surface-input);border:1px solid var(--surface-divider);color:var(--text-primary)}
+.updateBtn:hover{background:var(--surface-hover);border-color:var(--tg-blue)}
+.updateBtnPrimary{background:var(--tg-blue);border:none;color:white}
+.updateBtnPrimary:hover{background:var(--tg-blue-dark)}
+.updateStatus{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:12px;color:var(--text-secondary)}
+.updateStatus .spinner{width:14px;height:14px;border:2px solid var(--surface-divider);border-top-color:var(--tg-blue);border-radius:50%;animation:spin 0.6s linear infinite;flex-shrink:0}
+.updateAvailable{display:flex;flex-direction:column;gap:8px}
+.updateInfo{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-primary);font-weight:500}
+.updateBadge{background:var(--tg-blue-dim);color:var(--tg-blue);padding:2px 8px;border-radius:4px;font-size:11px}
+.updateNotes{font-size:11px;color:var(--text-secondary)}
+.updateNotes summary{cursor:pointer;margin-bottom:4px;color:var(--text-muted)}
+.updateNotes pre{font-family:var(--font-mono);font-size:10px;white-space:pre-wrap;max-height:120px;overflow-y:auto;background:var(--surface-bg);padding:8px;border-radius:6px;border:1px solid var(--surface-divider)}
+.updateError{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:11px;color:var(--color-error)}
+.updateRetry{background:none;border:1px solid var(--surface-divider);color:var(--text-primary);padding:4px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-family:var(--font-sans)}
+.updateRetry:hover{background:var(--surface-hover)}
