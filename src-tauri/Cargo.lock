@@ -4182,7 +4182,7 @@ dependencies = [
 
 [[package]]
 name = "telegram-drive"
-version = "1.5.1"
+version = "1.6.0"
 dependencies = [
  "anyhow",
  "dirs 5.0.1",
