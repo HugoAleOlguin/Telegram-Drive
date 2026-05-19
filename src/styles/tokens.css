@@ -1,35 +1,49 @@
-/* === DESIGN TOKENS — Telegram Drive === */
-/* Paleta inspirada en Telegram Desktop: azul noche, no gris genérico */
+/* === DESIGN TOKENS — Telegram Drive v3 === */
+/* Paleta AMOLED + plata oscura / gris c�lido (light) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* --- Primary Blue --- */
-  --tg-blue:      #3b82f6;   /* acento principal, azul normal */
-  --tg-blue-dark: #2563eb;   /* hover / pressed */
-  --tg-blue-dim:  rgba(59, 130, 246, 0.15);  /* fondos sutiles */
+  /* --- Primary: Telegram Blue --- */
+  --tg-blue:      #2AABEE;
+  --tg-blue-dark: #1E96D4;
+  --tg-blue-dim:  rgba(42, 171, 238, 0.12);
 
-  /* --- Superficies: paleta neutral dark --- */
-  --surface-bg:       #0f1115;  /* fondo base oscuro */
-  --surface-panel:    #181a20;  /* paneles elevados */
-  --surface-input:    #22252b;  /* inputs, campos */
-  --surface-item:     #181a20;  /* items de lista en reposo */
-  --surface-hover:    #22252b;  /* hover state */
-  --surface-active:   rgba(59, 130, 246, 0.1); /* selección activa */
-  --surface-divider:  rgba(255,255,255,0.08);  /* divisores muy sutiles */
+  /* --- Secondary: Telegram Green --- */
+  --tg-green:      #4DB86E;
+  --tg-green-dark: #3DA05E;
+  --tg-green-dim:  rgba(77, 184, 110, 0.12);
 
-  /* --- Texto --- */
-  --text-primary:   #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted:     #64748b;
-  --text-accent:    var(--tg-blue);
+  /* --- Accent: Violet / Purple (files) --- */
+  --tg-violet:      #A855F7;
+  --tg-violet-dim:  rgba(168, 85, 247, 0.12);
+
+  /* --- Accent: Amber (warnings) --- */
+  --tg-amber:      #F4B400;
+  --tg-amber-dim:  rgba(244, 180, 0, 0.12);
 
   /* --- Estado --- */
-  --color-success: #4DDB6E;
+  --color-success: #4DB86E;
   --color-error:   #E05C5C;
   --color-warning: #F4B400;
 
-  /* --- Tipografía --- */
+  /* --- Superficies: AMOLED Black + Plata Oscura --- */
+  --surface-bg:       #000000;
+  --surface-panel:    #0C0C0E;
+  --surface-input:    #171719;
+  --surface-item:     #0C0C0E;
+  --surface-hover:    #202022;
+  --surface-active:   rgba(42, 171, 238, 0.08);
+  --surface-overlay:  rgba(0, 0, 0, 0.75);
+  --surface-divider:  rgba(255, 255, 255, 0.05);
+
+  /* --- Texto: plata brillante --- */
+  --text-primary:   #E5E7EB;
+  --text-secondary: #9CA3AF;
+  --text-muted:     #6B7280;
+  --text-accent:    var(--tg-blue);
+
+  /* --- Tipograf�a --- */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
@@ -52,7 +66,7 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  /* --- Bordes — más suaves, menos angulares que el diseño anterior --- */
+  /* --- Bordes --- */
   --radius-xs:   4px;
   --radius-sm:   6px;
   --radius-md:   8px;
@@ -60,10 +74,13 @@
   --radius-xl:   16px;
   --radius-full: 9999px;
 
-  /* --- Sombras — sutiles, no dramáticas --- */
-  --shadow-sm:  0 1px 4px rgba(0,0,0,0.3);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.4);
-  --shadow-lg:  0 8px 24px rgba(0,0,0,0.5);
+  /* --- Sombras --- */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.5);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.6);
+  --shadow-lg:  0 8px 28px rgba(0,0,0,0.7);
+
+  /* --- Focus ring (accesibilidad) --- */
+  --focus-ring: 0 0 0 3px rgba(42, 171, 238, 0.45);
 
   /* --- Transiciones --- */
   --transition-fast:   120ms ease;
@@ -75,25 +92,50 @@
   --topbar-height: 52px;
 }
 
-/* ─── Light theme ──────────────────────────────── */
+/* ─── Light theme: gris c�lido, no blanco puro ── */
 [data-theme="light"] {
-  --tg-blue:      #2563eb;
-  --tg-blue-dark: #1d4ed8;
-  --tg-blue-dim:  rgba(37, 99, 235, 0.1);
+  --tg-blue:      #1A7FBA;
+  --tg-blue-dark: #15699E;
+  --tg-blue-dim:  rgba(26, 127, 186, 0.1);
 
-  --surface-bg:       #f2f2f7;
-  --surface-panel:    #ffffff;
-  --surface-input:    #e8e8ed;
-  --surface-item:     #ffffff;
-  --surface-hover:    #e8e8ed;
-  --surface-active:   rgba(37, 99, 235, 0.08);
+  --tg-green:      #3DA05E;
+  --tg-green-dim:  rgba(61, 160, 94, 0.1);
+
+  --tg-violet:      #7C3AED;
+  --tg-violet-dim:  rgba(124, 58, 237, 0.1);
+
+  --tg-amber:      #C58A00;
+  --tg-amber-dim:  rgba(197, 138, 0, 0.1);
+
+  --surface-bg:       #D8DBDF;
+  --surface-panel:    #EDEEF0;
+  --surface-input:    #D2D5D9;
+  --surface-item:     #EDEEF0;
+  --surface-hover:    #C4C7CC;
+  --surface-active:   rgba(26, 127, 186, 0.06);
+  --surface-overlay:  rgba(0, 0, 0, 0.25);
   --surface-divider:  rgba(0, 0, 0, 0.08);
 
-  --text-primary:   #1c1c1e;
-  --text-secondary: #636366;
-  --text-muted:     #aeaeb2;
+  --text-primary:   #16181B;
+  --text-secondary: #5A5E64;
+  --text-muted:     #8E9399;
 
-  --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg:  0 8px 32px rgba(0,0,0,0.12);
+  --focus-ring: 0 0 0 3px rgba(26, 127, 186, 0.35);
+
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-normal: 0ms;
+    --transition-slow: 0ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

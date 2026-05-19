@@ -87,6 +87,15 @@
   line-height: 1.6;
 }
 
+.guideLink {
+  color: var(--tg-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition-fast);
+  cursor: pointer;
+}
+.guideLink:hover { color: var(--tg-blue-dark); }
+
 .nav { display: flex; gap: 8px; margin-top: 4px; }
 
 .navSecondary {

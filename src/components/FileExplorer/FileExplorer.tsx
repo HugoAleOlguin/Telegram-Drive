@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FileCard } from '../FileCard/FileCard';
 import { listFiles } from '../../services/tauri-bridge';
+import type { DriveFile } from '../../types';
 import styles from './FileExplorer.module.css';
 
 interface Props {
@@ -10,7 +11,6 @@ interface Props {
 }
 
 export function FileExplorer({ view, searchQuery }: Props) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
   const { data: files = [], isLoading } = useQuery({
@@ -40,21 +40,12 @@ export function FileExplorer({ view, searchQuery }: Props) {
       {isDragOver && <div className={styles.dropOverlay}><span>Suelta archivos aquí</span></div>}
 
       {displayFiles.length === 0 ? (
-        <div className={styles.empty}>
-          <span className={styles.emptyIcon}>📂</span>
-          <p className={styles.emptyTitle}>Sin archivos</p>
-          <p className={styles.emptyDesc}>Sube archivos usando el botón "Subir"</p>
-        </div>
+        <div className={styles.empty}><p className={styles.emptyTitle}>Sin archivos</p><p className={styles.emptyDesc}>Sube archivos usando el botón &quot;Subir&quot;</p></div>
       ) : (
         <div className={view === 'grid' ? styles.grid : styles.list} role="grid" aria-label="Files">
-          {displayFiles.map((file) => (
-            <FileCard
-              key={file.id}
-              file={file}
-              view={view}
-              isSelected={selectedId === file.id}
-              onSelect={setSelectedId}
-            />
+          {displayFiles.map((file: DriveFile) => (
+            <FileCard key={file.id} file={file} view={view}
+              onPreview={() => {}} onDownload={() => {}} onDelete={() => {}} onRename={() => {}} onContextMenu={() => {}} />
           ))}
         </div>
       )}

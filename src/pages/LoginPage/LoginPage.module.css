@@ -8,29 +8,35 @@
 .page::before {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(42,171,238,0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(42, 171, 238, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .card {
   position: relative; z-index: 1;
-  width: 100%; max-width: 360px;
+  width: 100%; max-width: 380px;
   background: var(--surface-panel);
   border: 1px solid var(--surface-divider);
   border-radius: var(--radius-xl);
-  padding: 36px 32px;
+  padding: 40px 34px;
   box-shadow: var(--shadow-lg);
 }
 
 .header {
   display: flex; flex-direction: column; align-items: center;
-  gap: 12px; margin-bottom: 28px; text-align: center;
+  gap: 14px; margin-bottom: 28px; text-align: center;
 }
 
 .logo {
-  width: 72px; height: 72px;
+  width: 76px; height: 76px;
   background: var(--tg-blue); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
+  animation: logoPulse 3s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(42, 171, 238, 0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(42, 171, 238, 0); }
 }
 
 .logo svg { width: 36px; height: 36px; color: white; }
@@ -46,21 +52,21 @@
 
 .stepIndicator {
   display: flex; align-items: center; justify-content: center;
-  gap: 6px; margin-bottom: 24px;
+  gap: 8px; margin-bottom: 24px;
 }
 
 .step {
-  width: 6px; height: 6px; border-radius: var(--radius-full);
+  width: 8px; height: 8px; border-radius: var(--radius-full);
   background: var(--surface-divider);
   transition: all var(--transition-normal);
 }
 
 .step.active {
-  width: 18px; border-radius: 3px; background: var(--tg-blue);
+  width: 24px; border-radius: 4px; background: var(--tg-blue);
 }
 
 .form {
-  display: flex; flex-direction: column; gap: 14px;
+  display: flex; flex-direction: column; gap: 16px;
 }
 
 .field {
@@ -78,7 +84,7 @@
 }
 
 .input {
-  width: 100%; padding: 10px 14px;
+  width: 100%; padding: 11px 14px;
   background: var(--surface-input);
   border: 1px solid var(--surface-divider);
   border-radius: var(--radius-md);
@@ -91,7 +97,7 @@
 
 .input:focus {
   border-color: var(--tg-blue);
-  box-shadow: 0 0 0 2px var(--tg-blue-dim);
+  box-shadow: 0 0 0 3px rgba(42, 171, 238, 0.15);
 }
 
 input[type='number']::-webkit-inner-spin-button,
@@ -100,22 +106,23 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .button {
-  width: 100%; padding: 11px 16px;
+  width: 100%; padding: 12px 16px;
   background: var(--tg-blue); color: white;
   font-family: var(--font-sans); font-size: var(--text-base);
   font-weight: 600; border: none; border-radius: var(--radius-md);
-  cursor: pointer; transition: background var(--transition-fast);
+  cursor: pointer; transition: all var(--transition-fast);
   display: flex; align-items: center; justify-content: center;
   gap: 8px; margin-top: 4px;
 }
 
-.button:hover:not(:disabled) { background: var(--tg-blue-dark); }
+.button:hover:not(:disabled) { background: var(--tg-blue-dark); transform: translateY(-1px); }
+.button:active:not(:disabled) { transform: translateY(0); }
 .button:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .backBtn {
   background: transparent; color: var(--text-secondary);
   border: 1px solid var(--surface-divider);
-  font-size: var(--text-sm); padding: 9px 16px;
+  font-size: var(--text-sm); padding: 10px 16px;
   border-radius: var(--radius-md); cursor: pointer;
   transition: all var(--transition-fast); width: 100%;
   font-family: var(--font-sans);
@@ -124,16 +131,16 @@ input[type='number']::-webkit-outer-spin-button {
 .backBtn:hover {
   background: var(--surface-hover);
   color: var(--text-primary);
-  border-color: rgba(255,255,255,0.12);
+  border-color: var(--text-muted);
 }
 
 .error {
   font-size: var(--text-sm); color: var(--color-error);
   display: flex; align-items: center; gap: 8px;
   padding: 10px 12px;
-  background: rgba(224,92,92,0.08);
+  background: rgba(224, 92, 92, 0.08);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(224,92,92,0.15);
+  border: 1px solid rgba(224, 92, 92, 0.15);
 }
 
 .helpLink {
@@ -153,13 +160,13 @@ input[type='number']::-webkit-outer-spin-button {
 
 .spinner {
   width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: white; border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
 
-.langBar { position:absolute; top:16px; right:16px; z-index:2; display:flex; gap:4px; }
-.langBtn { padding:4px 12px; border:1px solid var(--surface-divider); border-radius:6px; background:var(--surface-panel); color:var(--text-muted); cursor:pointer; font-family:var(--font-sans); font-size:11px; font-weight:700; transition:all var(--transition-fast); }
-.langBtn:hover { background:var(--surface-hover); color:var(--text-primary); }
-.langActive { background:var(--tg-blue); border-color:var(--tg-blue); color:white; }
-.langActive:hover { background:var(--tg-blue-dark); color:white; }
+.langBar { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; gap: 6px; }
+.langBtn { padding: 5px 14px; border: 1px solid var(--surface-divider); border-radius: 8px; background: var(--surface-panel); color: var(--text-muted); cursor: pointer; font-family: var(--font-sans); font-size: 12px; font-weight: 700; transition: all var(--transition-fast); }
+.langBtn:hover { background: var(--surface-hover); color: var(--text-primary); border-color: var(--text-muted); }
+.langActive { background: var(--tg-blue); border-color: var(--tg-blue); color: white; }
+.langActive:hover { background: var(--tg-blue-dark); color: white; border-color: var(--tg-blue-dark); }

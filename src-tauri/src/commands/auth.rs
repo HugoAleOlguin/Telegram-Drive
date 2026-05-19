@@ -54,11 +54,19 @@ pub async fn auth_verify_code(state: State<'_, AppState>, code: String) -> Resul
 }
 
 #[command]
-pub async fn auth_logout(state: State<'_, AppState>) -> Result<(), String> {
+pub async fn auth_logout(app: AppHandle, state: State<'_, AppState>) -> Result<(), String> {
     let mut client_lock = state.telegram_client.lock().await;
     if let Some(client) = client_lock.take() {
-        client.sign_out().await.map_err(|e| e.to_string())?;
+        let _ = client.sign_out().await;
     }
+
+    let app_dir = app.path().app_data_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
+    let session_path = app_dir.join("telegram.session");
+    let _ = std::fs::remove_file(&session_path);
+
+    let conn = state.db_conn.lock().unwrap();
+    let _ = conn.execute("DELETE FROM config WHERE key IN ('api_id', 'api_hash', 'phone_number')", []);
+
     Ok(())
 }
 

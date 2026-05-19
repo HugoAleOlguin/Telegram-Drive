@@ -1,6 +1,6 @@
 [package]
 name = "telegram-drive"
-version = "1.6.0"
+version = "1.6.5"
 description = "Telegram Drive — Tu Google Drive gratis e ilimitado"
 authors = ["Hugo"]
 edition = "2021"
