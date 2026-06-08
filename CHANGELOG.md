@@ -14,6 +14,8 @@
 - **Limpieza de Ajustes**: Se eliminó el selector de "Animaciones" de la ventana de configuración, manteniendo la UI limpia y liviana.
 
 ### 3. Drag & Drop y Gestión de Subidas
+- **Corrección de Pantalla Estática (Bugfix)**: Se corrigió un problema donde la pantalla de drop se quedaba estática al arrastrar un archivo fuera de la ventana. Ahora se limpia en tiempo real al cancelar el arrastre o mover los archivos al exterior.
+- **Rediseño Minimalista**: Se rediseñó el overlay para hacerlo más claro y minimalista, con un contenedor elegante con borde punteado (`dotted`) que utiliza el color de acento dinámico y el logotipo oficial de Telegram.
 - **Arrastre a Nivel de Ventana**: Detección nativa del arrastre de archivos sobre cualquier sección del programa mediante Tauri v2.
 - **Subida de Carpetas Completas**: Soporte para arrastrar carpetas enteras de forma que se recrea su estructura de directorios recursivamente en Telegram.
 - **Carga Progresiva**: Actualización en tiempo real de la lista de archivos a medida que cada subida finaliza, sin esperar al resto de la cola.
