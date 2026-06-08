@@ -95,3 +95,5 @@ src-tauri/icons/ios/
 # Portable builds
 dist_portable/
 *.zip
+TelegramDrive_v*_portable.exe
+*.exe

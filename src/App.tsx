@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoginPage } from './pages/LoginPage/LoginPage';
 import { DrivePage } from './pages/DrivePage/DrivePage';
-import { authCheckSession, authLogout } from './services/tauri-bridge';
+import { authCheckSession, authLogout, readImageBytes } from './services/tauri-bridge';
 import { TranslationProvider } from './locales';
+import { applyAccentColor } from './utils/accent-colors';
+import { debugLog } from './utils/debug-logger';
+import { DebugPanel } from './components/DebugPanel/DebugPanel';
 import './styles/global.css';
 
 const queryClient = new QueryClient({
@@ -34,32 +37,158 @@ function LoadingScreen() {
 
 function AppContent() {
   const [screen, setScreen] = useState<Screen>('loading');
+  const [bgBlobUrl, setBgBlobUrl] = useState<string>('');
+  const [bgBlur, setBgBlur] = useState<number>(8);
+  const blobUrlRef = useRef<string>('');
+  const loadedPathRef = useRef<string>(''); // tracks which path is currently loaded
+
+  // Load background image from path using Tauri read_image_bytes → blob URL
+  const loadBackground = async (path: string) => {
+    // Revoke old blob URL to avoid memory leak
+    if (blobUrlRef.current) {
+      debugLog('debug', 'Revocando blob URL anterior', blobUrlRef.current.slice(0, 60));
+      URL.revokeObjectURL(blobUrlRef.current);
+      blobUrlRef.current = '';
+      setBgBlobUrl('');
+    }
+
+    if (!path) {
+      debugLog('info', 'Sin fondo configurado, usando color de fondo por defecto');
+      return;
+    }
+
+    debugLog('info', 'Cargando fondo personalizado...', { path });
+
+    try {
+      debugLog('debug', 'Invocando read_image_bytes...', { path });
+      const bytes = await readImageBytes(path);
+      debugLog('success', `Bytes recibidos del backend`, { byteCount: bytes.length, path });
+
+      if (!bytes || bytes.length === 0) {
+        debugLog('error', 'read_image_bytes devolvió 0 bytes', { path });
+        return;
+      }
+
+      // Detect MIME type from path extension
+      const ext = path.split('.').pop()?.toLowerCase() ?? 'jpg';
+      const mimeMap: Record<string, string> = {
+        jpg: 'image/jpeg', jpeg: 'image/jpeg',
+        png: 'image/png', webp: 'image/webp', gif: 'image/gif',
+      };
+      const mime = mimeMap[ext] ?? 'image/jpeg';
+      debugLog('debug', 'Tipo MIME detectado', { ext, mime });
+
+      // Build blob URL
+      const uint8 = new Uint8Array(bytes);
+      const blob = new Blob([uint8], { type: mime });
+      const url = URL.createObjectURL(blob);
+      debugLog('success', 'Blob URL creado exitosamente', url.slice(0, 60));
+
+      blobUrlRef.current = url;
+      loadedPathRef.current = path;
+      setBgBlobUrl(url);
+      debugLog('success', '✅ Fondo personalizado aplicado correctamente');
+    } catch (err) {
+      debugLog('error', 'Error al cargar fondo personalizado', String(err));
+    }
+  };
 
   useEffect(() => {
+    debugLog('info', '=== Telegram Drive iniciando ===');
+    debugLog('info', 'Aplicando color de acento...');
+    const accent = localStorage.getItem('tg-accent') || '#2AABEE';
+    applyAccentColor(accent);
+    debugLog('debug', 'Acento aplicado', { accent });
+
+    const savedPath = localStorage.getItem('tg-bg-image') || '';
+    const savedBlur = parseInt(localStorage.getItem('tg-bg-blur') || '8', 10);
+    debugLog('info', 'Fondo guardado en localStorage', { savedPath, savedBlur });
+
+    setBgBlur(savedBlur);
+
+    // Load background immediately if path exists
+    if (savedPath) {
+      loadBackground(savedPath);
+    }
+
+    debugLog('info', 'Verificando sesión de Telegram...');
     authCheckSession()
-      .then((hasSession) => setScreen(hasSession ? 'drive' : 'login'))
-      .catch(() => setScreen('login'));
+      .then((hasSession) => {
+        debugLog('info', 'Estado de sesión obtenido', { hasSession });
+        setScreen(hasSession ? 'drive' : 'login');
+      })
+      .catch((err) => {
+        debugLog('error', 'Error al verificar sesión', String(err));
+        setScreen('login');
+      });
+  }, []);
+
+  // React to background change events (dispatched by DrivePage settings)
+  useEffect(() => {
+    const handleBgChange = () => {
+      const newPath = localStorage.getItem('tg-bg-image') || '';
+      const newBlur = parseInt(localStorage.getItem('tg-bg-blur') || '8', 10);
+      debugLog('info', '🔄 Evento tg-bg-changed recibido', { newPath, newBlur });
+      setBgBlur(newBlur);
+      // Only reload image from disk if the path actually changed
+      if (newPath !== loadedPathRef.current) {
+        debugLog('debug', 'Path cambió, recargando imagen del disco...');
+        loadBackground(newPath);
+      } else {
+        debugLog('debug', 'Solo blur cambió, aplicando sin recargar imagen', { newBlur });
+      }
+    };
+    window.addEventListener('tg-bg-changed', handleBgChange);
+    return () => window.removeEventListener('tg-bg-changed', handleBgChange);
   }, []);
 
   async function handleLogout() {
+    debugLog('info', 'Cerrando sesión...');
     try { await authLogout(); } finally {
       queryClient.clear();
+      // Clean up blob URL on logout
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = '';
+      }
       try { localStorage.clear(); } catch { }
+      setBgBlobUrl('');
+      window.dispatchEvent(new Event('tg-bg-changed'));
       setScreen('login');
+      debugLog('info', 'Sesión cerrada.');
     }
   }
 
-  if (screen === 'loading') {
-    return <LoadingScreen />;
-  }
+  if (screen === 'loading') return <LoadingScreen />;
+
+  const bgStyle = bgBlobUrl
+    ? { backgroundImage: `url(${bgBlobUrl})` }
+    : {};
 
   return (
-    <div className="fade-in" key={screen}>
-      {screen === 'login'
-        ? <LoginPage onAuthSuccess={() => setScreen('drive')} />
-        : <DrivePage onLogout={handleLogout} />
-      }
-    </div>
+    <>
+      <div className="global-app-bg">
+        {bgBlobUrl && (
+          <>
+            <div
+              className="global-bg-img"
+              style={bgStyle}
+            />
+            <div
+              className="global-bg-blur"
+              style={{ ...bgStyle, filter: `blur(${bgBlur}px)` }}
+            />
+          </>
+        )}
+      </div>
+      <div className="fade-in" key={screen} style={{ height: '100%' }}>
+        {screen === 'login'
+          ? <LoginPage onAuthSuccess={() => { debugLog('success', 'Auth exitoso, cargando Drive...'); setScreen('drive'); }} />
+          : <DrivePage onLogout={handleLogout} />
+        }
+      </div>
+      <DebugPanel />
+    </>
   );
 }
 

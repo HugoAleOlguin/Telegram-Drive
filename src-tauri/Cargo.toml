@@ -1,6 +1,6 @@
 [package]
 name = "telegram-drive"
-version = "1.6.5"
+version = "1.777.0"
 description = "Telegram Drive — Tu Google Drive gratis e ilimitado"
 authors = ["Hugo"]
 edition = "2021"
@@ -14,7 +14,7 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 # --- Core Tauri ---
-tauri = { version = "2", features = [] }
+tauri = { version = "2", features = ["protocol-asset"] }
 tauri-plugin-opener = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
@@ -30,13 +30,13 @@ tokio = { version = "1", features = ["full"] }
 # --- Telegram MTProto (userbot) ---
 grammers-client = "0.7"
 grammers-session = "0.7"
+grammers-tl-types = "0.7"
 
 # --- Base de datos local (índice de metadatos) ---
 rusqlite = { version = "0.32", features = ["bundled"] }
 
 # --- Manejo de errores ---
 anyhow = "1"
-thiserror = "1"
 
 # --- Logging ---
 log = "0.4"
@@ -46,6 +46,5 @@ env_logger = "0.11"
 ureq = "2"
 
 # --- Utils ---
-uuid = { version = "1", features = ["v4"] }
 dirs = "5"
 

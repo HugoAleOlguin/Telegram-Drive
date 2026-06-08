@@ -10,7 +10,7 @@ pub struct UpdateInfo {
     pub release_notes: Option<String>,
 }
 
-fn is_newer(a: &str, b: &str) -> bool {
+fn is_older_than(a: &str, b: &str) -> bool {
     fn parse(v: &str) -> Vec<u32> {
         v.trim_start_matches('v')
             .split('.')
@@ -63,7 +63,7 @@ pub async fn check_update(current_version: String) -> Result<UpdateInfo, String>
         serde_json::from_str(&body).map_err(|e| format!("Error al parsear respuesta: {}", e))?;
 
     let latest_version = release.tag_name.trim_start_matches('v').to_string();
-    let is_available = is_newer(&current_version, &latest_version);
+    let is_available = is_older_than(&current_version, &latest_version);
 
     let download_url = release
         .assets

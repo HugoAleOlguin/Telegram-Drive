@@ -16,17 +16,11 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--surface-bg);
+  background-color: transparent;
   color: var(--text-primary);
   line-height: 1.5;
   overflow: hidden;
   user-select: none;
-}
-
-input,
-textarea,
-[data-selectable] {
-  user-select: text;
 }
 
 #root {
@@ -34,6 +28,12 @@ textarea,
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+input,
+textarea,
+[data-selectable] {
+  user-select: text;
 }
 
 :focus-visible {
@@ -82,44 +82,8 @@ textarea,
   white-space: nowrap;
 }
 
-/* CSS animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.6; }
 }
 
 .loading-screen {
@@ -176,8 +140,39 @@ textarea,
   animation: spin 0.8s linear infinite;
 }
 
-.fade-in        { animation: fadeIn 0.3s ease; }
-.fade-in-up     { animation: fadeInUp 0.4s ease-out; }
-.slide-in-right { animation: slideInRight 0.25s ease; }
-.scale-in       { animation: scaleIn 0.2s ease-out; }
-.slide-up       { animation: slideUp 0.3s ease-out; }
+/* Custom App Background Container */
+.global-app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--surface-bg);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.global-bg-img {
+  position: absolute;
+  inset: -5%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.global-bg-blur {
+  position: absolute;
+  inset: -5%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.9;
+}
+
+/* Global Animation & Transition Strip Override */
+*, *::before, *::after {
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+*:not(.spinner-ring):not(.loading-dot):not(.loading-logo):not(.spinner) {
+  animation: none !important;
+}

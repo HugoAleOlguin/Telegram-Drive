@@ -33,7 +33,6 @@ export function LoginPage({ onAuthSuccess }: Props) {
 
   return (
     <div className={styles.page}>
-      {/* Language toggle */}
       <div className={styles.langBar}>
         <button className={`${styles.langBtn} ${lang==='en'?styles.langActive:''}`} onClick={()=>setLang('en')}>EN</button>
         <button className={`${styles.langBtn} ${lang==='es'?styles.langActive:''}`} onClick={()=>setLang('es')}>ES</button>
@@ -79,18 +78,18 @@ export function LoginPage({ onAuthSuccess }: Props) {
             </p>
           </form>
         ):(
-          <form className={`${styles.form} slide-in-right`} onSubmit={hCode}>
+          <div className={`${styles.form} slide-in-right`}>
             <div className={styles.field}>
               <label className={styles.label} htmlFor="code">{t('code_l')}</label>
-              <input id="code" type="text" inputMode="numeric" pattern="[0-9]*" className={styles.input} placeholder="12345" value={code} onChange={e=>setCode(e.target.value)} required disabled={loading} autoFocus/>
+              <input id="code" type="text" inputMode="numeric" pattern="[0-9]*" className={styles.input} placeholder="12345" value={code} onChange={e=>setCode(e.target.value)} required autoFocus/>
               <p className={styles.hint}>{t('code_h')}</p>
             </div>
             {error&&<p className={styles.error}>{error}</p>}
-            <button type="submit" className={styles.button} disabled={loading||code.length<4}>
+            <button className={styles.button} disabled={code.length<4} onClick={hCode}>
               {loading?<span className={styles.spinner}/>:t('verify')}
             </button>
             <button type="button" className={styles.backBtn} onClick={()=>{setStep(1);setError(null)}}>{t('back')}</button>
-          </form>
+          </div>
         )}
       </div>
       {showGuide&&<ApiGuide onClose={()=>setShowGuide(false)}/>}

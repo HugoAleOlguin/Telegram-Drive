@@ -4,15 +4,6 @@ export interface TelegramCredentials {
   phoneNumber: string;
 }
 
-export interface DriveFolder {
-  id: string;
-  name: string;
-  parentId: string | null;
-  telegramChannelId: string;
-  createdAt: number;
-  fileCount?: number;
-}
-
 export interface DriveFile {
   id: string;
   name: string;
@@ -23,4 +14,20 @@ export interface DriveFile {
   createdAt: number;
   isEncrypted: boolean;
   thumbnailPath: string;
+}
+
+export interface DriveFolder {
+  id: string;
+  name: string;
+  parentId: string | null;
+  channelId: number;
+  createdAt: number;
+  fileCount: number;
+}
+
+export interface DiskScanEntry {
+  path: string;
+  name: string;
+  relPath: string;
+  isDir: boolean;
 }

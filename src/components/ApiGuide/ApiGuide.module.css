@@ -94,7 +94,7 @@
   transition: color var(--transition-fast);
   cursor: pointer;
 }
-.guideLink:hover { color: var(--tg-blue-dark); }
+.guideLink:hover { color: var(--tg-accent-dark); }
 
 .nav { display: flex; gap: 8px; margin-top: 4px; }
 
@@ -119,4 +119,4 @@
   transition: background var(--transition-fast);
 }
 
-.navPrimary:hover { background: var(--tg-blue-dark); }
+.navPrimary:hover { background: var(--tg-accent-dark); }

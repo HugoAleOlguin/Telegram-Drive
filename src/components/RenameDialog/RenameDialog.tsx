@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from '../../locales';
 import styles from './RenameDialog.module.css';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function RenameDialog({ currentName, onConfirm, onCancel }: Props) {
+  const { t } = useTranslation();
   const [value, setValue] = useState(currentName);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -16,7 +18,7 @@ export function RenameDialog({ currentName, onConfirm, onCancel }: Props) {
     const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') onCancel(); };
     window.addEventListener('keydown', esc);
     return () => window.removeEventListener('keydown', esc);
-  }, []);
+  }, [onCancel]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,13 +30,13 @@ export function RenameDialog({ currentName, onConfirm, onCancel }: Props) {
   return (
     <div className={styles.overlay} onClick={onCancel}>
       <div className={styles.dialog} onClick={e => e.stopPropagation()}>
-        <div className={styles.title}>Renombrar</div>
+        <div className={styles.title}>{t('ren_t')}</div>
         <form onSubmit={handleSubmit}>
           <input ref={inputRef} className={styles.input} type="text" value={value}
             onChange={e => setValue(e.target.value)} autoFocus />
           <div className={styles.actions}>
-            <button type="button" className={styles.cancelBtn} onClick={onCancel}>Cancelar</button>
-            <button type="submit" className={styles.confirmBtn}>Guardar</button>
+            <button type="button" className={styles.cancelBtn} onClick={onCancel}>{t('ren_c')}</button>
+            <button type="submit" className={styles.confirmBtn}>{t('ren_s')}</button>
           </div>
         </form>
       </div>

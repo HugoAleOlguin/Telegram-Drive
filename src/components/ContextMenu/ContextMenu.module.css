@@ -4,4 +4,3 @@
 .itemIcon { display:flex; color:var(--text-secondary); width:16px; justify-content:center; }
 .danger { color:var(--color-error); }
 .danger:hover { background:rgba(224,92,92,0.1); }
-@keyframes fadeIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }

@@ -11,6 +11,7 @@
     "process:default",
     "fs:default",
     "fs:allow-read",
-    "fs:allow-write"
+    "fs:allow-write",
+    "fs:read-all"
   ]
 }
